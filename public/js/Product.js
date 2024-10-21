@@ -24,11 +24,17 @@ function closeEditModal() {
 }
 
 function openModal() {
-    document.getElementById('addProductModal').classList.remove('hidden');
+    const modal = document.getElementById('addProductModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('opacity-100');
 }
 
 function closeModal() {
-    document.getElementById('addProductModal').classList.add('hidden');
+    const modal = document.getElementById('addProductModal');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('opacity-100');
+    }, 0); // Waktu yang sama dengan durasi transisi 
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {

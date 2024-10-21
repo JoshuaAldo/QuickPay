@@ -7,11 +7,17 @@
                 {{ session('success') }}
             </div>
         @endif
-        <!-- Button to Open the Modal -->
-        <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
-            onclick="openModal()">
-            Add Product
-        </button>
+
+        <div class="flex justify-end mb-4">
+            <a href="{{ route('export.products') }}"
+                class="bg-PinkTua text-white rounded-2xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Export
+                to Excel</a>
+            <button type="button"
+                class="bg-PinkTua text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95"
+                onclick="openModal()">
+                Add Product
+            </button>
+        </div>
 
         <!-- Products Table -->
         <div class="overflow-x-auto mt-5">

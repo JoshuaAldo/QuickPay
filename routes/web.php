@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\productController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsExport;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -21,6 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('product', productController::class);
 
     Route::resource('product_category', categoryController::class);
+
+    Route::get('export-products', function () {
+        return Excel::download(new ProductsExport, 'products.xlsx');
+    })->name('export.products');
 
     Route::get('/order', function () {
         return view('order');
