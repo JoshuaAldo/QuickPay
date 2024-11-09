@@ -16,11 +16,12 @@
         rel="stylesheet">
 </head>
 
-<body class="flex h-screen bg-PinkMuda">
+<body class="flex h-screen bg-PinkMuda  overflow-hidden">
     <x-sidebar></x-sidebar>
     <div class="flex-grow flex flex-col ">
         <!-- Header -->
-        <x-header></x-header>
+
+        <x-header><x-slot name="redirect">{{ $redirect }}</x-slot></x-header>
 
         <!-- Main Content -->
         <div class="flex-grow p-4">

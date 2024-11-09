@@ -12,7 +12,25 @@ module.exports = {
           PinkMuda: '#FEE5EB',
           PinkMuda2: '#FFF0F4',
           PinkSelect: '#FB6F92',
-        }
+        },
+        screens: {
+          'dekstopScreen' : '1920px',
+          'ipad-pro-11': '1194px', // Breakpoint portrait iPad Pro 11 inci
+        },
+        height: {
+          'dekstop': '45rem', 
+          'ipad' : '38rem',
+          'dekstopOrder': '42rem', 
+          'ipadOrder' : '36rem',
+        },
+        fontSize: {
+          'ipad-font': '11px', // Ganti 'custom' dan '24px' sesuai kebutuhan Anda
+          'ipad-font-input': '9px',
+        },
+        maxHeight: {
+          'dekstop-order-max': '900px', // Ganti 'custom' dan '400px' sesuai kebutuhan Anda
+          'ipad-order-max': '800px',
+        },
       },
       fontFamily: {
           zenOldMincho: ['"Zen Old Mincho"', 'serif'],

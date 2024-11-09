@@ -1,10 +1,16 @@
-<div class="flex justify-between items-center p-4 space-x-3">
+<div class="flex justify-between items-center pl-4 pr-4 pt-4 space-x-3">
     <div class="flex-grow">
         <div class="relative">
-            <input type="text" placeholder="Search"
-                class="w-full h-11 pr-12 pl-10 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-PinkTua opacity-60" />
+            {{-- <input type="text" id="search" placeholder="Search"
+                class="w-full h-11 pr-12 pl-10 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-PinkTua opacity-60" /> --}}
+            <form action="{{ route('search') }}" method="GET">
+                <input type="hidden" name="redirect" value="{{ $redirect }}">
+                <input type="text" name="query" placeholder="Search products..."
+                    class="w-full h-11 pr-12 pl-10 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-PinkTua opacity-60">
+            </form>
             <div class="absolute left-3 top-3">
-                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M8.9051 2.771C5.71837 2.771 3.13501 5.35435 3.13501 8.54111C3.13501 11.7278 5.71837 14.3112 8.9051 14.3112C12.0918 14.3112 14.6752 11.7278 14.6752 8.54111C14.6752 5.35435 12.0918 2.771 8.9051 2.771ZM1.94751 8.54111C1.94751 4.69852 5.06253 1.5835 8.9051 1.5835C12.7477 1.5835 15.8627 4.69852 15.8627 8.54111C15.8627 12.3837 12.7477 15.4987 8.9051 15.4987C5.06253 15.4987 1.94751 12.3837 1.94751 8.54111Z"
                         fill="#9A9A9A" />
@@ -62,16 +68,29 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <p class="text-gray-800 font-semibold">John Doe</p>
-                <p class="text-gray-500 text-sm">Admin</p> --}}
-                    {{-- @if (Auth::check())
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button class="bg-red-600">Logout</button>
-                </form>
-            @endif --}}
                 </div>
             </form>
         @endauth
     </div>
+    <script>
+        // document.getElementById('search').addEventListener('keyup', function() {
+        //     const searchValue = this.value.toLowerCase(); // Ambil nilai input dan ubah menjadi huruf kecil
+        //     const rows = document.querySelectorAll('#productTable tbody tr'); // Ambil semua baris tabel
+
+        //     rows.forEach(row => {
+        //         const cells = row.querySelectorAll('td'); // Ambil semua sel di baris
+        //         let rowContainsSearchTerm =
+        //             false; // Variabel untuk mengecek apakah baris mengandung istilah pencarian
+
+        //         cells.forEach(cell => {
+        //             if (cell.textContent.toLowerCase().includes(searchValue)) {
+        //                 rowContainsSearchTerm = true; // Jika ada sel yang cocok, set true
+        //             }
+        //         });
+
+        //         // Tampilkan atau sembunyikan baris berdasarkan hasil pencarian
+        //         row.style.display = rowContainsSearchTerm ? '' : 'none';
+        //     });
+        // });
+    </script>
 </div>

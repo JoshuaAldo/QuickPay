@@ -46,8 +46,8 @@
                     <span class="mx-2 text-sm font-semibold font-zenMaruGothic">Order</span>
                 </a>
 
-                <a class="flex items-center px-3 py-2 ml-8 mr-8 text-gray-400 {{ request()->is('draft-order') ? 'bg-PinkTua rounded-lg text-white font-bold' : 'bg-none transition-colors duration-300 transform rounded-lg hover:bg-PinkSelect hover:text-gray-200' }}"
-                    href="/draft-order">
+                <a class="flex items-center px-3 py-2 ml-8 mr-8 text-gray-400 {{ request()->is('draftOrder') ? 'bg-PinkTua rounded-lg text-white font-bold' : 'bg-none transition-colors duration-300 transform rounded-lg hover:bg-PinkSelect hover:text-gray-200' }}"
+                    href="/draftOrder">
                     <span class="mx-2 text-sm font-semibold font-zenMaruGothic">Draft Order</span>
                 </a>
             </div>

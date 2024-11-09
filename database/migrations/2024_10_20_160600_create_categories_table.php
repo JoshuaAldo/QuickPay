@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('category_name')->unique();
             $table->decimal('capital', 15, 2)->default(0);
             $table->integer('total_stock')->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
