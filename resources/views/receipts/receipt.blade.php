@@ -19,13 +19,9 @@
         }
 
         .receipt-container {
-            padding: 10px;
+            padding: 8px;
             /* Mengurangi padding untuk lebih banyak ruang */
 
-        }
-
-        .receipt-details {
-            margin-bottom: 5px;
         }
 
         .store-name {
@@ -35,21 +31,24 @@
             text-align: center;
         }
 
-        .items td {
-            padding: 3px 0;
-            margin-right: 4px;
+        .items tr {
+            margin: 0;
+        }
+
+        .headNota tr {
+            margin: 0;
         }
 
         table {
             width: 100%;
             border-collapse: separate;
             /* Enable border-spacing */
-            border-spacing: 10px;
+
             /* Space between cells */
         }
 
         .items {
-            margin-bottom: 26px;
+            margin-bottom: 16px;
         }
 
         .header {
@@ -61,9 +60,9 @@
             text-align: right;
         }
 
-        .item-qty {
-            text-align: center;
-        }
+        /* .item-qty {
+            margin-left: 4px
+        } */
 
         .footer {
             font-size: 10px;
@@ -74,46 +73,170 @@
         .total-container {
             margin-bottom: 12px;
         }
+
+        .flex {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        hr {
+            width: 100%;
+            border: 0;
+            border-top: 1px dashed black;
+            /* Memberikan margin di atas dan bawah */
+        }
+
+        .footNota {
+            margin-bottom: 16px;
+        }
     </style>
 </head>
 
 <body>
     <div class="receipt-container">
-        <div class="store-name">{{ $store_name }}</div>
-        <div class="receipt-details">
-            <div>Tanggal: {{ $order_date }}</div>
-            <div>Nomer Order: {{ $order_number }}</div>
-            <div>Nama Customer: {{ $customer_name }}</div>
+        <div class="store-name">
+            {{ $store_name }} <span style="font-weight: normal; font-size: 10px">Sukolilo/Semolowaru/Rumah Semolowaru
+                Tengah
+                11/5, Sukolilo,
+                Semolowaru, Surabaya</span>
         </div>
+        <table class="headNota">
+            <tbody>
+                <tr>
+                    {{-- <td>
+                        Tanggal:
+                    </td> --}}
+                    <td style="text-align: right;font-size: 9px">
+                        <span>{{ $order_date }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    {{-- <td>
+                        Nomer Order:
+                    </td> --}}
+                    <td style="text-align: right;font-size: 9px">
+                        <span>{{ $order_number }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    {{-- <td style="font-size: 9.5px">
+                        Nama Customer:
+                    </td> --}}
+                    <td style="text-align: right;font-size: 9px">
+                        <span>{{ $customer_name }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
 
         <table class="items">
-            <thead>
-                <tr>
-                    <th class="header">Nama Makanan</th>
-                    <th class="header">Jumlah</th>
-                    <th class="header-right">Harga</th>
-                </tr>
-            </thead>
             <tbody>
                 @foreach ($items as $item)
                     <tr>
                         <td>{{ $item['name'] }}</td>
-                        <td class="item-qty">{{ $item['quantity'] }}</td>
-                        <td style="text-align: right">{{ number_format($item['item_total'], 0) }}</td>
                     </tr>
+                    <tr>
+                        <td class="item-qty">{{ $item['quantity'] }}x</td>
+                        <td>{{ '@' }}{{ number_format($item['harga_makanan'], 0) }}
+                        </td>
+                        <td style="text-align: right">{{ number_format($item['item_total'], 0) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ $item['description'] }}</td>
+                    </tr>
+                    <td colspan="3">
+                        <hr>
+                    </td>
                 @endforeach
             </tbody>
         </table>
-        <div class="total-container">
-            <span>Total:</span>
-            <span style="text-align: right"> {{ number_format($total, 0) }}</span>
-            <div>Dibayar: {{ number_format($Payment_Amount, 0) }}</div>
-            <div>Kembali: {{ number_format($change, 0) }}</div>
-        </div>
 
-        <div class="total-section">
-            <div style="margin-bottom: 8px">Metode Pembayaran: {{ $Payment_Method }}</div>
-        </div>
+
+        <table class="footNota">
+            <tbody>
+                <tr>
+                    <td>
+                        Subtotal
+                    </td>
+                    <td style="text-align: right">
+                        <span>{{ number_format($total, 0) }}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Pajak
+                    </td>
+                    <td style="text-align: right">
+                        <span>-</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Total
+                    </td>
+                    <td style="text-align: right">
+                        <span>{{ number_format($total, 0) }}</span>
+                    </td>
+                </tr>
+
+                <td colspan="3">
+                    <hr>
+                </td>
+
+                @if (
+                    $Payment_Method === 'Cash' ||
+                        $Payment_Method === 'QR' ||
+                        $Payment_Method === 'Debit' ||
+                        $Payment_Method === 'Credit Card' ||
+                        $Payment_Method === 'Transfer')
+                    <tr>
+                        <td>
+                            {{ $Payment_Method }}
+                        </td>
+                        <td style="text-align: right">
+                            <span>{{ number_format($Payment_Amount, 0) }}</span>
+                        </td>
+                    </tr>
+                @elseif($Payment_Method === 'Cash & QR')
+                    <tr>
+                        <td>
+                            Cash
+                        </td>
+                        <td style="text-align: right">
+                            <span>{{ number_format($Cash_Amount, 0) }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            QR
+                        </td>
+                        <td style="text-align: right">
+                            <span>{{ number_format($QR_Amount, 0) }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ $Payment_Method }}
+                        </td>
+                        <td style="text-align: right">
+                            <span>{{ number_format($Payment_Amount, 0) }}</span>
+                        </td>
+                    </tr>
+                @endif
+                <tr>
+                    <td>
+                        Kembalian
+                    </td>
+                    <td style="text-align: right">
+                        <span>{{ number_format($change, 0) }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <div class="footer">
             Terima kasih telah Membeli Makan/Minum di {{ $store_name }}!

@@ -34,7 +34,8 @@ module.exports = {
       },
       fontFamily: {
           zenOldMincho: ['"Zen Old Mincho"', 'serif'],
-          zenMaruGothic: ["Zen Maru Gothic", 'serif']
+          zenMaruGothic: ["Zen Maru Gothic", 'serif'],
+          monospace: ["Space Mono", "monospace"]
         },
     },
     plugins: [],
