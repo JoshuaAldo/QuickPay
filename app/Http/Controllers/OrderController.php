@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DraftOrder;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -13,17 +14,34 @@ class OrderController extends Controller
     // Menampilkan semua produk untuk halaman order
     public function index()
     {
+        $draftOrders = DraftOrder::with('items')->get();
         $products = Auth::user()->products; // Ambil semua produk
         $redirect = "order";
-        return view('order.index', compact('products', 'redirect')); // Kirim data ke view
+        $productQuantities = session('productQuantities', []);
+        $productDescription = session('productDescription', []);
+        $custName = session('draftOrderCustName');
+        return view('order.index', compact('products', 'redirect', 'productQuantities', 'productDescription', 'custName')); // Kirim data ke view
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function redirectToOrderPage(Request $request, $draftId)
     {
-        //
+        // Ambil data draft order dan itemnya
+        $draftOrder = DraftOrder::with('items')->findOrFail($draftId);
+        $draftOrder2 = DraftOrder::findOrFail($draftId);
+
+        // Persiapkan data quantity untuk setiap produk
+        $productQuantities = [];
+        $productDescription = [];
+        foreach ($draftOrder->items as $item) {
+            $productQuantities[$item->product_name] = $item->quantity; // Menyimpan quantity produk sesuai dengan draft order
+            $productDescription[$item->product_name] = $item->description;
+        }
+        $custName = $draftOrder2->customer_name;
+
+        // $draftOrder->items()->delete();
+        // $draftOrder->delete();
+        // Redirect ke halaman order dan kirim data productQuantities ke view
+        return redirect()->route('order.index')->with('productQuantities', $productQuantities)->with('productDescription', $productDescription)->with('draftOrderCustName', $custName);
     }
 
     /**
@@ -31,6 +49,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $userId = Auth::id();
         // Validasi input
         $validatedData = $request->validate([
             'customer_name' => 'required|string|max:255',
@@ -67,6 +86,7 @@ class OrderController extends Controller
 
         // Buat order baru
         $order = Order::create([
+            'user_id' => $userId,
             'order_number' => $orderNumber,
             'customer_name' => $validatedData['customer_name'],
             'order_date' => $orderDate,
@@ -101,13 +121,6 @@ class OrderController extends Controller
             ->with('success', 'Order Successfully Created')
             ->with('change', $change)
             ->with('orderId', $order->id)->with('orderNumber', $orderNumber);
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**

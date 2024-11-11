@@ -50,6 +50,7 @@ function openCartModal() {
         const productName = input.dataset.productName;
         const productPrice = input.dataset.productPrice;
         const productImage = input.dataset.productImage;
+        const productDescription = input.dataset.productDescription;
 
         if (quantity > 0) {
             const item = document.createElement('div');
@@ -61,7 +62,7 @@ function openCartModal() {
                         <h2 class="text-xl font-semibold">${productName}</h2>
                         <input type="text" class="border mt-2 p-1 w-full focus:outline-none rounded-md" 
                                placeholder="Description" 
-                               value="${productDescriptions[productId] || ''}" 
+                               value="${productDescription || ''}" 
                                data-product-description-id="${productId}" 
                                oninput="updateProductDescription(event, ${productId})">
                     </div>
@@ -110,11 +111,15 @@ function saveToDraft() {
     });
 
     // Pastikan ada customer name dan cart items
-    if (!customerName || cartItems.length === 0) {
-        alert('Please enter customer name and add items to the cart before saving.');
+    if (!customerName) {
+        showToast('Fill the Customer Name');
         return;
     }
-
+    if(cartItems.length === 0){
+        showToast("Choose At Least 1 Menu");
+        return;
+    }
+    
     // Mengisi input tersembunyi dengan data
     document.getElementById('hiddenCustomerName2').value = customerName;
     document.getElementById('hiddenCartItems').value = JSON.stringify(cartItems);
@@ -399,23 +404,10 @@ function closeReceiptModal() {
     document.getElementById('receiptModal').classList.remove('flex');
 }
 
-// function saveToDraft() {
-//     const customerName = document.getElementById('customerName').value;
-//     const cartItems = getCartItems(); // Fungsi ini harus mengembalikan array cart items dari modal
-
-//     fetch('/save-draft', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-//         },
-//         body: JSON.stringify({ customer_name: customerName, cart_items: cartItems })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.message) {
-//             alert(data.message); // Atau tampilkan toast di UI
-//         }
-//     })
-//     .catch(error => console.error('Error:', error));
-// }
+document.addEventListener("DOMContentLoaded", function() {
+    // Cek apakah `showCartModal` bernilai true
+    if (showCartModal) {
+        // Tampilkan modal cart
+        document.getElementById("cartModal").classList.remove("hidden");
+    }
+});

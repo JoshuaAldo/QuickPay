@@ -11,13 +11,17 @@ class DraftOrderController extends Controller
 {
     public function index()
     {
-        $draftOrders = DraftOrder::with('items')->get();
+        $userId = Auth::id();
+        $draftOrders = DraftOrder::with('items')
+            ->where('user_id', $userId)
+            ->get();
         $redirect = "order";
         return view('draft_order.index', compact('draftOrders', 'redirect'));
     }
 
     public function store(Request $request)
     {
+        $userId = Auth::id();
         $request->merge([
             'cart_items' => json_decode($request->cart_items, true)
         ]);
@@ -40,6 +44,7 @@ class DraftOrderController extends Controller
 
         // Menyimpan Draft Order
         $draftOrder = DraftOrder::create([
+            'user_id' => $userId,
             'customer_name' => $request->customer_name
         ]);
 

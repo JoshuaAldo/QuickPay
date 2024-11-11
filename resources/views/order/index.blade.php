@@ -97,13 +97,15 @@
                             class="bg-white border dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 text-gray-700 rounded-l-md px-2 hover:bg-PinkSelect transition duration-200"
                             onclick="decrementQuantity({{ $product->id }})">-</button>
 
-                        <input type="number" min="0" max="{{ $product->stock }}" value="0"
+                        <!-- Mengecek apakah ada quantity dari draftOrder untuk produk ini -->
+                        <input type="number" min="0" max="{{ $product->stock }}"
+                            value="{{ isset($productQuantities[$product->product_name]) ? $productQuantities[$product->product_name] : 0 }}"
                             class="dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 border text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none draftData"
                             id="quantity_{{ $product->id }}" data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->product_name }}"
                             data-product-image="{{ asset('storage/' . $product->image) }}"
                             data-product-price="{{ $product->sell_price }}"
-                            data-product-description="{{ $product->description }}">
+                            data-product-description="{{ isset($productDescription[$product->product_name]) ? $productDescription[$product->product_name] : '' }}">
 
                         <button
                             class="bg-white border dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 text-gray-700 rounded-r-md hover:bg-PinkSelect transition duration-200"
@@ -120,168 +122,188 @@
                 </script>
             @endforeach
         </div>
-    </div>
 
-    <!-- Modal -->
-    <div id="cartModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-        <div
-            class="bg-white rounded-lg shadow-lg w-full max-w-3xl dekstopScreen:max-h-dekstop-order-max ipad-pro-11:max-h-ipad-order-max overflow-y-auto my-8">
-            <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold mb-4">Cart Details</h2>
-                    <button class="text-gray-600 hover:text-gray-900 text-2xl font-bold mb-4"
-                        onclick="closeCartModal()">&times;</button>
-                </div>
-
-                <div id="cartItems" class="mt-4">
-                    <!-- Cart items will be injected here -->
-                </div>
-                <div class="p-4 flex flex-col">
-                    <label for="customerName" class="mt-4">Customer Name:</label>
-                    <input type="text" id="customerName" placeholder="Enter your name"
-                        class="border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none" required>
-                    <div id="toast" class=" mt-4 hidden bg-red-500 text-white p-2 rounded-lg shadow-lg">
-                        <span id="toastMessage"></span>
-                    </div>
-                    <div class="flex justify-between mt-4">
-                        <form id="saveToDraftForm" method="POST" action="{{ route('draftOrder.store') }}"
-                            style="display: none;">
-                            @csrf
-                            <input type="text" id="hiddenCustomerName2" name="customer_name" value="">
-                            <input type="hidden" id="hiddenCartItems" name="cart_items" value="">
-                        </form>
-
-                        <button type="button"
-                            class="bg-orange-500 text-white hover:bg-orange-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
-                            onclick="saveToDraft()">Save to Draft</button>
-                        <button
-                            class="bg-PinkTua text-white hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
-                            onclick="showPaymentModal()">Pay</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl h-3/4 overflow-x-auto my-8">
-            <div class="flex justify-between items-center p-6 border-b">
-                <button class="text-gray-600 hover:text-gray-900 text-sm font-bold mb-4" onclick="backToCartModal()">
-                    <span class="text-2xl">&lt;</span>
-                </button>
-                <h2 class="text-lg font-bold">Payment Summary</h2>
-                <button class="text-gray-600 hover:text-gray-900 text-2xl font-bold"
-                    onclick="closePaymentModal()">&times;</button>
-            </div>
-
-            <form id="orderForm" method="POST" action="{{ route('order.store') }}"
-                onsubmit="populateHiddenInputs()">
-                @csrf
-                <div class="p-6 flex-grow overflow-y-auto"> <!-- Make the content area scrollable -->
-                    <div class="mb-4">
-                        <p>Customer Name: <span id="paymentCustomerName"></span></p>
-                        <p>Date: <span id="paymentDate"></span></p>
-                        <p>Order Number: <span id="orderNumber"></span></p>
+        <!-- Modal -->
+        <div id="cartModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div
+                class="bg-white rounded-lg shadow-lg w-full max-w-3xl dekstopScreen:max-h-dekstop-order-max ipad-pro-11:max-h-ipad-order-max overflow-y-auto my-8">
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold mb-4">Cart Details</h2>
+                        <button class="text-gray-600 hover:text-gray-900 text-2xl font-bold mb-4"
+                            onclick="closeCartModal()">&times;</button>
                     </div>
 
-                    <!-- Transaction Details -->
-                    <div class="bg-gray-100 p-4 rounded-md mb-4 max-h-60 overflow-auto">
-                        <!-- Set maximum height and enable scrolling -->
-                        <h3 class="font-bold mb-2">Transaction Details</h3>
-                        <div id="transactionDetails"></div>
-                        <p class="font-semibold mt-2">Total: Rp<span id="transactionTotal">0</span></p>
+                    <div id="cartItems" class="mt-4">
+                        <!-- Cart items will be injected here -->
                     </div>
-                    <!-- Hidden inputs untuk menyimpan nilai dari span -->
-                    <input type="hidden" id="hiddenCustomerName" name="customer_name">
-                    <input type="hidden" id="hiddenDate" name="order_date">
-                    <input type="hidden" id="hiddenOrderNumber" name="order_number">
-                    <input type="hidden" id="hiddenTransactionDetails" name="transaction_details">
-
-                    <!-- Payment Method and Amount -->
-                    <div class="flex">
-                        <div class="w-1/2 pr-4">
-                            <label for="paymentMethod" class="block font-bold mb-2">Payment Method</label>
-                            <select id="paymentMethod" name="payment_method" class="border rounded-lg p-2 w-full"
-                                onchange="updatePaymentInputs()">
-                                <option value="Cash">Cash</option>
-                                <option value="QR">QR</option>
-                                <option value="Debit">Debit</option>
-                                <option value="Credit Card">Credit Card</option>
-                                <option value="Transfer">Transfer</option>
-                                <option value="Cash & QR">Cash & QR</option>
-                            </select>
-
-                            <label for="settlementStatus" class="block font-bold mb-2 mt-2">Settlement Status</label>
-                            <select id="settlementStatus" name="settlement_status"
-                                class="border rounded-lg p-2 w-full">
-                                <option value="Pending">Pending</option>
-                                <option value="Settled">Settled</option>
-                            </select>
-
-                            <label for="paymentReff" class="block font-bold mb-2 mt-2">Payment Reference</label>
-                            <input type="text" id="paymentReff" name="payment_reference" placeholder="Reff ID"
-                                class="border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none w-full">
-
+                    <div class="p-4 flex flex-col">
+                        <label for="customerName" class="mt-4">Customer Name:</label>
+                        <input type="text" id="customerName" placeholder="Enter your name"
+                            class="border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none"
+                            value="{{ $custName }}" required>
+                        <div id="toast" class=" mt-4 hidden bg-red-500 text-white p-2 rounded-lg shadow-lg">
+                            <span id="toastMessage"></span>
                         </div>
-                        <div class="w-1/2">
-                            <label for="paymentAmount" class="block font-bold mb-2">Payment Amount</label>
-                            <input id="paymentAmount" name="payment_amount" type="number"
-                                class="border rounded-lg p-2 w-full text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                placeholder="0" min="0" required>
+                        <div class="flex justify-between mt-4">
+                            <form id="saveToDraftForm" method="POST" action="{{ route('draftOrder.store') }}"
+                                style="display: none;">
+                                @csrf
+                                <input type="text" id="hiddenCustomerName2" name="customer_name" value="">
+                                <input type="hidden" id="hiddenCartItems" name="cart_items" value="">
+                            </form>
 
-                            <div id="cashInputContainer" class="hidden mt-4">
-                                <label for="cashAmount" class="block font-bold mb-2">Cash Amount</label>
-                                <input id="cashAmount" name="cash_amount" type="number"
-                                    class="border rounded-lg p-2 w-full text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    placeholder="Enter Cash Amount" oninput="updatePaymentAmount()">
-                            </div>
-
-                            <div id="qrInputContainer" class="hidden mt-4">
-                                <label for="qrAmount" class="block font-bold mb-2">QR Amount</label>
-                                <input id="qrAmount" name="qr_amount" type="number"
-                                    class="border rounded-lg p-2 w-full text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    placeholder="Enter QR Amount" oninput="updatePaymentAmount()">
-                            </div>
-
-                            <!-- Quick Amount Buttons -->
-                            <div class="flex space-x-2 mt-2 overflow-y-auto max-h-20" id="numberInput">
-                                <button type="button" onclick="addAmount(5000)"
-                                    class="bg-gray-200 rounded-lg p-2">Rp5000</button>
-                                <button type="button" onclick="addAmount(10000)"
-                                    class="bg-gray-200 rounded-lg p-2">Rp10000</button>
-                                <button type="button" onclick="addAmount(20000)"
-                                    class="bg-gray-200 rounded-lg p-2">Rp20000</button>
-                                <button type="button" onclick="addAmount(50000)"
-                                    class="bg-gray-200 rounded-lg p-2">Rp50000</button>
-                                <button type="button" onclick="addAmount(100000)"
-                                    class="bg-gray-200 rounded-lg p-2">Rp100000</button>
-                            </div>
-
-                            <!-- Numeric Layout for Custom Amount -->
-                            <div class="grid grid-cols-3 gap-2 mt-2" id="numberInput2">
-                                <button type="button" onclick="appendAmount('1')" class="bg-gray-100 p-2">1</button>
-                                <button type="button" onclick="appendAmount('2')" class="bg-gray-100 p-2">2</button>
-                                <button type="button" onclick="appendAmount('3')" class="bg-gray-100 p-2">3</button>
-                                <button type="button" onclick="appendAmount('4')" class="bg-gray-100 p-2">4</button>
-                                <button type="button" onclick="appendAmount('5')" class="bg-gray-100 p-2">5</button>
-                                <button type="button" onclick="appendAmount('6')" class="bg-gray-100 p-2">6</button>
-                                <button type="button" onclick="appendAmount('7')" class="bg-gray-100 p-2">7</button>
-                                <button type="button" onclick="appendAmount('8')" class="bg-gray-100 p-2">8</button>
-                                <button type="button" onclick="appendAmount('9')" class="bg-gray-100 p-2">9</button>
-                                <button type="button" onclick="clearAmount()" class="bg-red-200 p-2">C</button>
-                                <button type="button" onclick="appendAmount('0')" class="bg-gray-100 p-2">0</button>
-                                <!-- Backspace Button -->
-                                <button type="button" onclick="backspaceAmount()"
-                                    class="bg-gray-100 p-2">&larr;</button>
-
-                            </div>
-                            <button type="submit"
-                                class="bg-PinkTua text-white rounded-lg p-2 col-span-3 mt-4 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 w-full">Confirm
-                                Order</button>
-            </form>
+                            <button type="button"
+                                class="bg-orange-500 text-white hover:bg-orange-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
+                                onclick="saveToDraft()">Save to Draft</button>
+                            <button
+                                class="bg-PinkTua text-white hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
+                                onclick="showPaymentModal()">Pay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <script src="{{ asset('js/Order.js') }}"></script>
+
+
+        <!-- Payment Modal -->
+        <div id="paymentModal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div
+                class="bg-white rounded-lg shadow-lg dekstopScreen:w-[1080px] dekstopScreen:max-w-3xl dekstopScreen:h-3/4 ipad-pro-11:max-w-3xl ipad-pro-11:h-5/6  overflow-x-auto my-8">
+
+                <div class="flex justify-between items-center p-6 border-b">
+                    <button class="text-gray-600 hover:text-gray-900 text-sm font-bold mb-4"
+                        onclick="backToCartModal()">
+                        <span class="text-2xl">&lt;</span>
+                    </button>
+                    <h2 class="text-lg font-bold">Payment Summary</h2>
+                    <button class="text-gray-600 hover:text-gray-900 text-2xl font-bold"
+                        onclick="closePaymentModal()">&times;</button>
+                </div>
+
+
+                <form id="orderForm" method="POST" action="{{ route('order.store') }}"
+                    onsubmit="populateHiddenInputs()">
+                    @csrf
+                    <div class="p-6 flex-grow overflow-y-auto"> <!-- Make the content area scrollable -->
+                        <div class="mb-4">
+                            <p>Customer Name: <span id="paymentCustomerName"></span></p>
+                            <p>Date: <span id="paymentDate"></span></p>
+                            <p>Order Number: <span id="orderNumber"></span></p>
+                        </div>
+
+                        <!-- Transaction Details -->
+                        <div class="bg-gray-100 p-4 rounded-md mb-4 max-h-48 overflow-auto">
+                            <!-- Set maximum height and enable scrolling -->
+                            <h3 class="font-bold mb-2">Transaction Details</h3>
+                            <div id="transactionDetails"></div>
+                        </div>
+                        <p class="font-semibold mt-2 bg-gray-100 p-4 rounded-md mb-4 overflow-auto">Total: Rp<span
+                                id="transactionTotal">0</span></p>
+                        <!-- Hidden inputs untuk menyimpan nilai dari span -->
+                        <input type="hidden" id="hiddenCustomerName" name="customer_name">
+                        <input type="hidden" id="hiddenDate" name="order_date">
+                        <input type="hidden" id="hiddenOrderNumber" name="order_number">
+                        <input type="hidden" id="hiddenTransactionDetails" name="transaction_details">
+
+                        <!-- Payment Method and Amount -->
+                        <div class="flex">
+                            <div class="w-1/2 pr-4">
+                                <label for="paymentMethod" class="block font-bold mb-2">Payment Method</label>
+                                <select id="paymentMethod" name="payment_method" class="border rounded-lg p-2 w-full"
+                                    onchange="updatePaymentInputs()">
+                                    <option value="Cash">Cash</option>
+                                    <option value="QR">QR</option>
+                                    <option value="Debit">Debit</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Transfer">Transfer</option>
+                                    <option value="Cash & QR">Cash & QR</option>
+                                </select>
+
+                                <label for="settlementStatus" class="block font-bold mb-2 mt-2">Settlement
+                                    Status</label>
+                                <select id="settlementStatus" name="settlement_status"
+                                    class="border rounded-lg p-2 w-full">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Settled">Settled</option>
+                                </select>
+
+                                <label for="paymentReff" class="block font-bold mb-2 mt-2">Payment Reference</label>
+                                <input type="text" id="paymentReff" name="payment_reference"
+                                    placeholder="Reff ID"
+                                    class="border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none w-full">
+
+                            </div>
+                            <div class="w-1/2 mb-4">
+                                <label for="paymentAmount" class="block font-bold mb-2">Payment Amount</label>
+                                <input id="paymentAmount" name="payment_amount" type="number"
+                                    class="border rounded-lg p-2 w-full text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    placeholder="0" min="0" required>
+
+                                <div id="cashInputContainer" class="hidden mt-4">
+                                    <label for="cashAmount" class="block font-bold mb-2">Cash Amount</label>
+                                    <input id="cashAmount" name="cash_amount" type="number"
+                                        class="border rounded-lg p-2 w-full text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        placeholder="Enter Cash Amount" oninput="updatePaymentAmount()">
+                                </div>
+
+                                <div id="qrInputContainer" class="hidden mt-4">
+                                    <label for="qrAmount" class="block font-bold mb-2">QR Amount</label>
+                                    <input id="qrAmount" name="qr_amount" type="number"
+                                        class="border rounded-lg p-2 w-full text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        placeholder="Enter QR Amount" oninput="updatePaymentAmount()">
+                                </div>
+
+                                <!-- Quick Amount Buttons -->
+                                <div class="flex space-x-2 mt-2 overflow-y-auto max-h-20" id="numberInput">
+                                    <button type="button" onclick="addAmount(5000)"
+                                        class="bg-gray-200 rounded-lg p-2">Rp5000</button>
+                                    <button type="button" onclick="addAmount(10000)"
+                                        class="bg-gray-200 rounded-lg p-2">Rp10000</button>
+                                    <button type="button" onclick="addAmount(20000)"
+                                        class="bg-gray-200 rounded-lg p-2">Rp20000</button>
+                                    <button type="button" onclick="addAmount(50000)"
+                                        class="bg-gray-200 rounded-lg p-2">Rp50000</button>
+                                    <button type="button" onclick="addAmount(100000)"
+                                        class="bg-gray-200 rounded-lg p-2">Rp100000</button>
+                                </div>
+
+                                <!-- Numeric Layout for Custom Amount -->
+                                <div class="grid grid-cols-3 gap-2 mt-2" id="numberInput2">
+                                    <button type="button" onclick="appendAmount('1')"
+                                        class="bg-gray-100 p-2">1</button>
+                                    <button type="button" onclick="appendAmount('2')"
+                                        class="bg-gray-100 p-2">2</button>
+                                    <button type="button" onclick="appendAmount('3')"
+                                        class="bg-gray-100 p-2">3</button>
+                                    <button type="button" onclick="appendAmount('4')"
+                                        class="bg-gray-100 p-2">4</button>
+                                    <button type="button" onclick="appendAmount('5')"
+                                        class="bg-gray-100 p-2">5</button>
+                                    <button type="button" onclick="appendAmount('6')"
+                                        class="bg-gray-100 p-2">6</button>
+                                    <button type="button" onclick="appendAmount('7')"
+                                        class="bg-gray-100 p-2">7</button>
+                                    <button type="button" onclick="appendAmount('8')"
+                                        class="bg-gray-100 p-2">8</button>
+                                    <button type="button" onclick="appendAmount('9')"
+                                        class="bg-gray-100 p-2">9</button>
+                                    <button type="button" onclick="clearAmount()" class="bg-red-200 p-2">C</button>
+                                    <button type="button" onclick="appendAmount('0')"
+                                        class="bg-gray-100 p-2">0</button>
+                                    <!-- Backspace Button -->
+                                    <button type="button" onclick="backspaceAmount()"
+                                        class="bg-gray-100 p-2">&larr;</button>
+
+                                </div>
+                                <button type="submit"
+                                    class="bg-PinkTua text-white rounded-lg p-2 col-span-3 mt-4 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 w-full">Confirm
+                                    Order</button>
+                </form>
+            </div>
+        </div>
+
+        <script src="{{ asset('js/Order.js') }}"></script>
 </x-layout>

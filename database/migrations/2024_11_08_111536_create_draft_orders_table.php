@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('draft_orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('customer_name');
             $table->timestamps(); // Untuk menyimpan waktu ketika draft disimpan
         });

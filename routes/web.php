@@ -10,6 +10,7 @@ use App\Exports\ProductsExport;
 use App\Http\Controllers\DraftOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrintController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\SearchController;
 
 Route::middleware('guest')->group(function () {
@@ -38,6 +39,10 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('draftOrder', DraftOrderController::class);
 
+    Route::post('order/redirect/{draftId}', [OrderController::class, 'redirectToOrderPage'])->name('order.redirectToOrder');
+
+    Route::resource('sales-report', SalesReportController::class);
+
     Route::post('/print-receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
     Route::get('/receipt-preview/{id}', [PrintController::class, 'receiptPreview'])->name('receipt.preview');
 
@@ -52,11 +57,6 @@ Route::middleware('auth')->group(function () {
     // Route::get('/order', function () {
     //     return view('order');
     // });
-
-
-    Route::get('/sales-report', function () {
-        return view('salesReport');
-    });
 
     Route::get('/purchase-of-goods', function () {
         return view('purchaseOfGoods');

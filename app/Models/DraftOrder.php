@@ -11,11 +11,17 @@ class DraftOrder extends Model
 
     protected $fillable = [
         'customer_name',
+        'user_id'
     ];
 
     public function items()
     {
-        return $this->hasMany(DraftOrderItem::class);
+        return $this->hasMany(DraftOrderItem::class,);
     }
     public $timestamps = true;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
