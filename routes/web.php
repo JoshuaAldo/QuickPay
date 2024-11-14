@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('product_category', categoryController::class);
 
     Route::resource('order', OrderController::class);
+    Route::post('/print-receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
+    Route::get('/receipt-preview/{id}', [PrintController::class, 'receiptPreview'])->name('receipt.preview');
 
     Route::resource('draftOrder', DraftOrderController::class);
 
@@ -43,8 +45,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('sales-report', SalesReportController::class);
 
-    Route::post('/print-receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
-    Route::get('/receipt-preview/{id}', [PrintController::class, 'receiptPreview'])->name('receipt.preview');
 
     Route::get('export-products', function () {
         return Excel::download(new ProductsExport, 'products.xlsx');

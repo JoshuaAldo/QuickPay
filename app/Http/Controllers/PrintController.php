@@ -22,8 +22,8 @@ class PrintController extends Controller
 
         // Ambil data order items
         $orderItems = OrderItem::where('order_id', $orderId)->get();
-        $change = $order->payment_amount - $orderItems->sum('item_total');
-
+        $discount = $request->input('hiddenDiskon');
+        $change = $order->payment_amount - ($orderItems->sum('item_total') - $discount);
         // Siapkan data struk
         $receiptData = [
             'store_name' => 'Delicious Foodies',
@@ -41,7 +41,9 @@ class PrintController extends Controller
                 ];
             }),
             'Payment_Method' => $order->payment_method,
-            'total' => $orderItems->sum('item_total'),
+            'subTotal' => $orderItems->sum('item_total'),
+            'discount' => $discount,
+            'total' => $orderItems->sum('item_total') - $discount,
             'Payment_Amount' => (int)$order->payment_amount,
             'Cash_Amount' => (int)$order->cash_amount,
             'QR_Amount' => (int)$order->qr_amount,
@@ -69,7 +71,7 @@ class PrintController extends Controller
         ]);
     }
 
-    public function receiptPreview($id)
+    public function receiptPreview($id, Request $request)
     {
         $order = Order::find($id);
         if (!$order) {
@@ -77,8 +79,9 @@ class PrintController extends Controller
         }
 
         $orderItems = OrderItem::where('order_id', $id)->get();
-        $change = $order->payment_amount - $orderItems->sum('item_total');
+        $discount = $request->query('discount', 0);
 
+        $change = $order->payment_amount - ($orderItems->sum('item_total') - $discount);
         $receiptData = [
             'store_name' => 'Delicious Foodies',
             'order_date' => $order->order_date,
@@ -95,6 +98,7 @@ class PrintController extends Controller
             'total' => $orderItems->sum('item_total'),
             'Payment_Amount' => (int)$order->payment_amount,
             'change' => $change,
+            'discount' => $discount,
         ];
 
         return view('receipts.modal-view', $receiptData);

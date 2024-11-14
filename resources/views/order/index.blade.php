@@ -1,7 +1,6 @@
 <x-layout>
     <x-slot name="redirect">{{ $redirect }}</x-slot>
     <div class="container mx-auto mt-6 font-zenMaruGothic">
-        <p>Order ID: {{ $draftId }}</p>
         <h1 class="text-2xl font-bold mb-4">Order Products</h1>
         @if (session('success'))
             <!-- Modal untuk menampilkan status transaksi -->
@@ -43,6 +42,7 @@
                         <form id="printReceiptForm" method="POST" action="{{ route('print.receipt') }}">
                             @csrf
                             <input type="hidden" name="order_id" value="{{ session('orderId') }}">
+                            <input type="hidden" name="hiddenDiskon" id="hiddenDiskon" value="{{ $discount }}">
                             <button type="submit"
                                 class="w-full bg-PinkTua text-white py-2 rounded-md mb-2 font-semibold hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">
                                 Print Receipt
@@ -51,7 +51,7 @@
 
                         <!-- Tombol untuk melihat preview struk -->
                         <button type="button" id="seeReceiptBtn"
-                            onclick="openReceiptPreview('{{ session('orderId') }}')"
+                            onclick="openReceiptPreview('{{ session('orderId') }}', '{{ $discount }}')"
                             class="w-full bg-gray-500 text-white py-2 rounded-md mb-2 font-semibold hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">See
                             Receipt</button>
 
@@ -221,7 +221,6 @@
                                     <option value="Transfer">Transfer</option>
                                     <option value="Cash & QR">Cash & QR</option>
                                 </select>
-
                                 <label for="settlementStatus" class="block font-bold mb-2 mt-2">Settlement
                                     Status</label>
                                 <select id="settlementStatus" name="settlement_status"
@@ -229,11 +228,13 @@
                                     <option value="Pending">Pending</option>
                                     <option value="Settled">Settled</option>
                                 </select>
-
                                 <label for="paymentReff" class="block font-bold mb-2 mt-2">Payment Reference</label>
                                 <input type="text" id="paymentReff" name="payment_reference"
                                     placeholder="Reff ID"
                                     class="border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none w-full">
+                                <input type="number" id="diskon" name="diskon"
+                                    class="mt-4 border rounded-lg p-2 w-full  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    placeholder="Enter Discount">
 
                             </div>
                             <div class="w-1/2 mb-4">

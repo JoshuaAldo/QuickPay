@@ -161,16 +161,16 @@
                         Subtotal
                     </td>
                     <td style="text-align: right">
-                        <span>{{ number_format($total, 0) }}</span>
+                        <span>{{ number_format($subTotal, 0) }}</span>
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        Pajak
+                        Diskon
                     </td>
                     <td style="text-align: right">
-                        <span>-</span>
+                        <span>-{{ number_format($discount, 0) }}</span>
                     </td>
                 </tr>
 

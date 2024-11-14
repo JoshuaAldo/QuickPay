@@ -23,8 +23,9 @@ class OrderController extends Controller
         $productDescription = session('productDescription', []);
         $custName = session('draftOrderCustName');
         $draftId = session('draftId');
+        $discount = session('discount');
 
-        return view('order.index', compact('products', 'redirect', 'productQuantities', 'productDescription', 'custName', 'draftId')); // Kirim data ke view
+        return view('order.index', compact('products', 'redirect', 'productQuantities', 'productDescription', 'custName', 'draftId', 'discount')); // Kirim data ke view
     }
 
     public function redirectToOrderPage(Request $request, $draftId)
@@ -115,8 +116,9 @@ class OrderController extends Controller
                 $product->save();
             }
         }
+        $discount = $request->input('diskon');
         // Hitung change (kembalian)
-        $change = $validatedData['payment_amount'] - $totalItem;
+        $change = $validatedData['payment_amount'] - ($totalItem - $discount);
         if ($draftId !== null) {
             $draftOrder = DraftOrder::with('items')->findOrFail($draftId);
             $draftOrder->items()->delete();
@@ -125,7 +127,7 @@ class OrderController extends Controller
         return redirect()->route('order.index')
             ->with('success', 'Order Successfully Created')
             ->with('change', $change)
-            ->with('orderId', $order->id)->with('orderNumber', $orderNumber);
+            ->with('orderId', $order->id)->with('orderNumber', $orderNumber)->with('discount', $discount);
     }
 
     /**

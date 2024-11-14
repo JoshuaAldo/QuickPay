@@ -219,7 +219,6 @@ function showToast(message) {
 
 function showPaymentModal() {
     const customerName = document.getElementById("customerName").value.trim();
-
     if (!customerName) {
         showToast("Fill the Customer Name");
         return;
@@ -258,13 +257,12 @@ function showPaymentModal() {
         showToast("Choose at least 1 Menu");
         return;
     }
-
     document.getElementById("transactionTotal").textContent = totalAmount.toLocaleString();
     const currentDate = new Date();
     document.getElementById("paymentCustomerName").textContent = customerName;
     document.getElementById("paymentDate").textContent = currentDate.toLocaleString();
     document.getElementById("orderNumber").textContent = `ORD-${currentDate.getTime()}`;
-
+    document.getElementById("diskon").textContent = totalAmount;
     document.getElementById("cartModal").classList.add("hidden");
     document.getElementById("paymentModal").classList.remove("hidden");
 }
@@ -366,7 +364,7 @@ function populateHiddenInputs() {
         const quantity = parseInt(item.querySelector('.quantity').innerText.replace('x ', ''));
         const itemTotal = item.querySelector('.item-total').innerText.replace('Rp', '').replace(',', '');
         const description = item.querySelector('.description').innerText;
-
+        
         // Push item transaksi sebagai objek JSON
         transactionDetails.push({
             productName,
@@ -388,8 +386,8 @@ function closePaymentStatusModal() {
     document.getElementById('paymentStatusModal').style.display = 'none';
 }
 
-function openReceiptPreview(orderId) {
-    fetch(`/receipt-preview/${orderId}`)
+function openReceiptPreview(orderId, discount) {
+    fetch(`/receipt-preview/${orderId}?discount=${discount}`)
         .then(response => response.text())
         .then(html => {
             document.getElementById('modalContent').innerHTML = html;

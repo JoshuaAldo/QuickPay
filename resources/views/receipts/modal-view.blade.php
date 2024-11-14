@@ -31,6 +31,10 @@
             <span>{{ number_format($total, 0) }}</span>
         </div>
         <div class="flex justify-between">
+            <span>Diskon:</span>
+            <span>-{{ $discount }}</span>
+        </div>
+        <div class="flex justify-between">
             <span>Dibayar:</span>
             <span>{{ number_format($Payment_Amount, 0) }}</span>
         </div>
