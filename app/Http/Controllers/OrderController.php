@@ -9,18 +9,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
+use function PHPUnit\Framework\isNull;
+
 class OrderController extends Controller
 {
     // Menampilkan semua produk untuk halaman order
     public function index()
     {
-        $draftOrders = DraftOrder::with('items')->get();
+        // $draftOrders = DraftOrder::with('items')->get();
         $products = Auth::user()->products; // Ambil semua produk
         $redirect = "order";
         $productQuantities = session('productQuantities', []);
         $productDescription = session('productDescription', []);
         $custName = session('draftOrderCustName');
-        return view('order.index', compact('products', 'redirect', 'productQuantities', 'productDescription', 'custName')); // Kirim data ke view
+        $draftId = session('draftId');
+
+        return view('order.index', compact('products', 'redirect', 'productQuantities', 'productDescription', 'custName', 'draftId')); // Kirim data ke view
     }
 
     public function redirectToOrderPage(Request $request, $draftId)
@@ -38,10 +42,8 @@ class OrderController extends Controller
         }
         $custName = $draftOrder2->customer_name;
 
-        // $draftOrder->items()->delete();
-        // $draftOrder->delete();
         // Redirect ke halaman order dan kirim data productQuantities ke view
-        return redirect()->route('order.index')->with('productQuantities', $productQuantities)->with('productDescription', $productDescription)->with('draftOrderCustName', $custName);
+        return redirect()->route('order.index')->with('productQuantities', $productQuantities)->with('productDescription', $productDescription)->with('draftOrderCustName', $custName)->with('draftId', $draftId);
     }
 
     /**
@@ -51,6 +53,7 @@ class OrderController extends Controller
     {
         $userId = Auth::id();
         // Validasi input
+        $draftId = $request->input('draftId');
         $validatedData = $request->validate([
             'customer_name' => 'required|string|max:255',
             'order_date' => 'required|date',
@@ -77,8 +80,6 @@ class OrderController extends Controller
                 $orderDate = null; // atau berikan pesan error sesuai kebutuhan
             }
         }
-        // dd($orderDate);
-        // dd($validatedData['order_date']);
         // Hitung total item dari transaksi
         $totalItem = array_reduce($transactionDetails, function ($sum, $item) {
             return $sum + $item['itemTotal'];
@@ -116,7 +117,11 @@ class OrderController extends Controller
         }
         // Hitung change (kembalian)
         $change = $validatedData['payment_amount'] - $totalItem;
-
+        if ($draftId !== null) {
+            $draftOrder = DraftOrder::with('items')->findOrFail($draftId);
+            $draftOrder->items()->delete();
+            $draftOrder->delete();
+        }
         return redirect()->route('order.index')
             ->with('success', 'Order Successfully Created')
             ->with('change', $change)

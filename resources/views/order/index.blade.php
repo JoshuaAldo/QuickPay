@@ -1,6 +1,7 @@
 <x-layout>
     <x-slot name="redirect">{{ $redirect }}</x-slot>
     <div class="container mx-auto mt-6 font-zenMaruGothic">
+        <p>Order ID: {{ $draftId }}</p>
         <h1 class="text-2xl font-bold mb-4">Order Products</h1>
         @if (session('success'))
             <!-- Modal untuk menampilkan status transaksi -->
@@ -152,7 +153,6 @@
                                 <input type="text" id="hiddenCustomerName2" name="customer_name" value="">
                                 <input type="hidden" id="hiddenCartItems" name="cart_items" value="">
                             </form>
-
                             <button type="button"
                                 class="bg-orange-500 text-white hover:bg-orange-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
                                 onclick="saveToDraft()">Save to Draft</button>
@@ -298,6 +298,7 @@
                                         class="bg-gray-100 p-2">&larr;</button>
 
                                 </div>
+                                <input type="hidden" name="draftId" value="{{ $draftId }}">
                                 <button type="submit"
                                     class="bg-PinkTua text-white rounded-lg p-2 col-span-3 mt-4 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 w-full">Confirm
                                     Order</button>
