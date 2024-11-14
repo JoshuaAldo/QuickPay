@@ -27,12 +27,17 @@
     </table>
     <div class="mt-4">
         <div class="flex justify-between">
-            <span>Total:</span>
-            <span>{{ number_format($total, 0) }}</span>
+            <span>Subtotal:</span>
+            <span>{{ number_format($Subtotal, 0) }}</span>
         </div>
         <div class="flex justify-between">
             <span>Diskon:</span>
             <span>-{{ $discount }}</span>
+        </div>
+        <br>
+        <div class="flex justify-between">
+            <span>Total:</span>
+            <span>{{ number_format($total, 0) }}</span>
         </div>
         <div class="flex justify-between">
             <span>Dibayar:</span>

@@ -95,7 +95,8 @@ class PrintController extends Controller
                 ];
             }),
             'Payment_Method' => $order->payment_method,
-            'total' => $orderItems->sum('item_total'),
+            'Subtotal' => $orderItems->sum('item_total'),
+            'total' => $orderItems->sum('item_total') - $discount,
             'Payment_Amount' => (int)$order->payment_amount,
             'change' => $change,
             'discount' => $discount,
