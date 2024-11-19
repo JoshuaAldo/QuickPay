@@ -2,30 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\DraftOrder;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\isNull;
 
 class OrderController extends Controller
 {
-    // Menampilkan semua produk untuk halaman order
-    public function index()
+    public function index(Request $request)
     {
-        // $draftOrders = DraftOrder::with('items')->get();
-        $products = Auth::user()->products; // Ambil semua produk
         $redirect = "order";
-        $productQuantities = session('productQuantities', []);
-        $productDescription = session('productDescription', []);
+        $productQuantities = session('productQuantities', []); // Ambil productQuantities dari session            
+        $productDescription = session('productDescription', []); // Ambil productDescription dari session
         $custName = session('draftOrderCustName');
         $draftId = session('draftId');
         $discount = session('discount');
+        $categories = Auth::user()->categories()->withCount('products')->get();
+        $selectedCategory = $request->input('category');
+        $productQty = 0;
 
-        return view('order.index', compact('products', 'redirect', 'productQuantities', 'productDescription', 'custName', 'draftId', 'discount')); // Kirim data ke view
+        if ($selectedCategory) {
+            // Ambil produk berdasarkan kategori yang dipilih
+            $products = Auth::user()->products()
+                ->select('*', DB::raw("CAST(REGEXP_SUBSTR(product_name, '[0-9]+') AS UNSIGNED) as numeric_part"))
+                ->orderBy(DB::raw("REGEXP_SUBSTR(product_name, '^[A-Za-z ]*')"), 'asc')
+                ->orderBy('numeric_part', 'asc')
+                ->where('category_id', $selectedCategory)
+                ->get();
+        } else {
+
+            // Tampilkan semua produk jika tidak ada kategori yang dipilih
+            $products = Auth::user()->products()
+                ->select('*', DB::raw("CAST(REGEXP_SUBSTR(product_name, '[0-9]+') AS UNSIGNED) as numeric_part"))
+                ->orderBy(DB::raw("REGEXP_SUBSTR(product_name, '^[A-Za-z ]*')"), 'asc')
+                ->orderBy('numeric_part', 'asc')
+                ->get();
+        }
+
+        return view('order.index', compact(
+            'products',
+            'redirect',
+            'productQuantities',
+            'productDescription',
+            'custName',
+            'draftId',
+            'discount',
+            'categories',
+            'selectedCategory',
+            'productQty'
+        ));
     }
 
     public function redirectToOrderPage(Request $request, $draftId)
@@ -85,6 +115,7 @@ class OrderController extends Controller
         $totalItem = array_reduce($transactionDetails, function ($sum, $item) {
             return $sum + $item['itemTotal'];
         }, 0);
+        $discount = $request->input('diskon');
 
         // Buat order baru
         $order = Order::create([
@@ -98,6 +129,7 @@ class OrderController extends Controller
             'qr_amount' => $validatedData['qr_amount'],
             'settlement_status' => $validatedData['settlement_status'],
             'payment_reference' => $validatedData['payment_reference'],
+            'discount' => $discount,
         ]);
 
         // Simpan setiap item transaksi
@@ -116,7 +148,6 @@ class OrderController extends Controller
                 $product->save();
             }
         }
-        $discount = $request->input('diskon');
         // Hitung change (kembalian)
         $change = $validatedData['payment_amount'] - ($totalItem - $discount);
         if ($draftId !== null) {

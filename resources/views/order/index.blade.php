@@ -2,6 +2,20 @@
     <x-slot name="redirect">{{ $redirect }}</x-slot>
     <div class="container mx-auto mt-6 font-zenMaruGothic">
         <h1 class="text-2xl font-bold mb-4">Order Products</h1>
+        {{-- <div class="filter-buttons">
+            <!-- Tombol untuk menampilkan semua produk -->
+            <button onclick="window.location='{{ route('order.index') }}'"
+                class=" bg-PinkTua w-24 text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 {{ is_null($selectedCategory) ? 'bg-pink-900 text-white' : 'bg-PinkTua' }}">
+                All Items
+            </button>
+            <!-- Tombol untuk setiap kategori -->
+            @foreach ($categories as $category)
+                <button onclick="window.location='{{ route('order.index', ['category' => $category->id]) }}'"
+                    class="bg-PinkTua w-auto text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 {{ $selectedCategory == $category->id ? 'bg-pink-900 text-white' : 'bg-PinkTua' }}">
+                    {{ $category->category_name }}
+                </button>
+            @endforeach
+        </div> --}}
         @if (session('success'))
             <!-- Modal untuk menampilkan status transaksi -->
             <div id="paymentStatusModal"
@@ -78,7 +92,7 @@
         <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 dekstopScreen:h-dekstopOrder ipad-pro-11:h-ipadOrder overflow-y-auto overflow-x-auto">
             @foreach ($products as $product)
-                <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col dekstopScreen:h-52 ipad-pro-11:h-30">
+                <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col dekstopScreen:h-52 ipad-pro-11:h-32">
                     <div class="flex">
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}"
                             class="dekstopScreen:w-32 dekstopScreen:h-32 object-cover rounded-md ipad-pro-11:w-20 ipad-pro-11:h-16">
@@ -99,7 +113,7 @@
                             onclick="decrementQuantity({{ $product->id }})">-</button>
 
                         <!-- Mengecek apakah ada quantity dari draftOrder untuk produk ini -->
-                        <input type="number" min="0" max="{{ $product->stock }}"
+                        <input type="number" name="qtyProduct" min="0" max="{{ $product->stock }}"
                             value="{{ isset($productQuantities[$product->product_name]) ? $productQuantities[$product->product_name] : 0 }}"
                             class="dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 border text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none draftData"
                             id="quantity_{{ $product->id }}" data-product-id="{{ $product->id }}"
@@ -142,7 +156,7 @@
                         <label for="customerName" class="mt-4">Customer Name:</label>
                         <input type="text" id="customerName" placeholder="Enter your name"
                             class="border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none"
-                            value="{{ $custName }}" required>
+                            value="{{ $custName }}" name="custName" required>
                         <div id="toast" class=" mt-4 hidden bg-red-500 text-white p-2 rounded-lg shadow-lg">
                             <span id="toastMessage"></span>
                         </div>

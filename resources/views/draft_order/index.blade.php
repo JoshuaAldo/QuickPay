@@ -33,9 +33,6 @@
                         </ul>
                         <div class="flex justify-between mt-4">
                             <p class="text-gray-600 bg-yellow-200 p-2 rounded-md">PENDING</p>
-                            {{-- <button class="bg-PinkTua text-white px-4 py-2 rounded-lg">
-                                Pay
-                            </button> --}}
 
                             <form action="{{ route('order.redirectToOrder', $order->id) }}" method="POST">
                                 @csrf

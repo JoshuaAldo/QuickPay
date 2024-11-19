@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\OrdersExport;
 use App\Exports\ProductsCategoryExport;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
@@ -7,9 +8,11 @@ use App\Http\Controllers\productController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsExport;
+use App\Exports\PurchaseExport;
 use App\Http\Controllers\DraftOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrintController;
+use App\Http\Controllers\PurchaseOfGoodsController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\SearchController;
 
@@ -36,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('product_category', categoryController::class);
 
     Route::resource('order', OrderController::class);
+
+
     Route::post('/print-receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
     Route::get('/receipt-preview/{id}', [PrintController::class, 'receiptPreview'])->name('receipt.preview');
 
@@ -43,8 +48,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('order/redirect/{draftId}', [OrderController::class, 'redirectToOrderPage'])->name('order.redirectToOrder');
 
-    Route::resource('sales-report', SalesReportController::class);
 
+    Route::resource('sales-report', SalesReportController::class);
+    Route::get('sales-report/filter', [SalesReportController::class, 'index'])->name('sales-report.filter');
+
+    Route::resource('purchase-of-goods', PurchaseOfGoodsController::class);
+    Route::get('purchase-of-goods/filter', [PurchaseOfGoodsController::class, 'index'])->name('purchase-of-goods.filter');
 
     Route::get('export-products', function () {
         return Excel::download(new ProductsExport, 'products.xlsx');
@@ -54,11 +63,15 @@ Route::middleware('auth')->group(function () {
         return Excel::download(new ProductsCategoryExport, 'productsCategory.xlsx');
     })->name('export.productsCategory');
 
+    Route::get('export-orders', function () {
+        return Excel::download(new OrdersExport, 'Sales-Reports.xlsx');
+    })->name('export.orders');
+
+    Route::get('export-purchase', function () {
+        return Excel::download(new PurchaseExport, 'Purchase-of-Goods-Reports.xlsx');
+    })->name('export.purchase');
+
     // Route::get('/order', function () {
     //     return view('order');
     // });
-
-    Route::get('/purchase-of-goods', function () {
-        return view('purchaseOfGoods');
-    });
 });

@@ -20,6 +20,7 @@ class Order extends Model
         'qr_amount',
         'settlement_status',
         'payment_reference',
+        'discount',
     ];
 
     public function items()

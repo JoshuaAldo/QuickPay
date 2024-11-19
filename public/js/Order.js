@@ -35,8 +35,10 @@ function decrementQuantity(productId) {
 
     if (currentValue > 0) {
         input.value = currentValue - 1;
+        console.log(input.value);
     }
 }
+
 const productDescriptions = {}; 
 
 function openCartModal() {

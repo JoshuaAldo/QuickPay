@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('qr_amount', 10, 2)->nullable();
             $table->string('settlement_status');
             $table->string('payment_reference')->nullable();
+            $table->integer('discount')->nullable();
             $table->timestamps();
         });
     }

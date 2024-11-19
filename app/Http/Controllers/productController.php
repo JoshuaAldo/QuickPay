@@ -25,18 +25,19 @@ class ProductController extends Controller
         return view('product.index', compact('products', 'categories', 'redirect'));
     }
 
+
     /**
      * Show the form for creating a new product.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        // Ambil semua kategori
-        $categories = Category::all();
+    // public function create()
+    // {
+    //     // Ambil semua kategori
+    //     $categories = Category::all();
 
-        return view('product.create', compact('categories'));
-    }
+    //     return view('product.create', compact('categories'));
+    // }
 
     /**
      * Store a newly created product in storage.
@@ -155,21 +156,4 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('error', 'Product not found');
     }
-
-    // public function search(Request $request)
-    // {
-    //     $query = $request->input('query');
-
-    //     if (empty($query)) {
-    //         return redirect()->route('product.index');
-    //     }
-    //     // Mencari produk berdasarkan nama
-    //     $products = Product::where('user_id', Auth::id())->where('product_name', 'LIKE', "%{$query}%")->get();
-
-    //     // Ambil semua kategori untuk ditampilkan di view
-    //     $categories = Category::where('user_id', Auth::id())->get();
-
-    //     // Mengembalikan view dengan hasil pencarian
-    //     return view('product.index', compact('products', 'categories'));
-    // }
 }

@@ -15,7 +15,7 @@ class DraftOrderController extends Controller
         $draftOrders = DraftOrder::with('items')
             ->where('user_id', $userId)
             ->get();
-        $redirect = "order";
+        $redirect = "draftOrder";
         return view('draft_order.index', compact('draftOrders', 'redirect'));
     }
 
