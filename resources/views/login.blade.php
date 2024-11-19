@@ -51,16 +51,19 @@
                         <input type="password" class="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
                             placeholder="Enter password" id="password" name="password" required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
+                            <button type="button" id="togglePassword" class="focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="eyeIcon" class="w-6 h-6 text-gray-400"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
                         </span>
                     </div>
                 </div>
+
 
                 @if (session('failed'))
                     <p class="text-red-700 text-center font-zenMaruGothic">{{ session('failed') }}</p>
@@ -78,6 +81,17 @@
             </form>
         </div>
     </div>
+    <script>
+        const passwordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePasswordButton.addEventListener('click', () => {
+            // Toggle tipe input
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        });
+    </script>
 </body>
 
 </html>
