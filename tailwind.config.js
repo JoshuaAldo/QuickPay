@@ -12,6 +12,10 @@ module.exports = {
           PinkMuda: '#FEE5EB',
           PinkMuda2: '#FFF0F4',
           PinkSelect: '#FB6F92',
+          blueRevamp: '#578FCA',
+          blueRevamp2: '#A1E3F9',
+          blueRevamp3: '#3674B5'
+
         },
         screens: {
           'dekstopScreen' : '1920px',

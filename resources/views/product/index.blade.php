@@ -20,10 +20,10 @@
         @endif
         <div class="flex justify-end mb-4">
             <a href="{{ route('export.products') }}"
-                class="bg-PinkTua text-white rounded-2xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Export
+                class="bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Export
                 to Excel</a>
             <button type="button"
-                class="bg-PinkTua text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95"
+                class="bg-blueRevamp text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
                 onclick="openModal()">
                 Add Product
             </button>
@@ -31,9 +31,9 @@
 
         <!-- Products Table -->
         <div class="flex flex-col h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto">
-            <table class="min-w-full max-w-full bg-white border-gray-200">
+            <table class="min-w-full max-w-full bg-white border-gray-200 ">
                 <thead class="rounded-lg">
-                    <tr class="bg-PinkMuda2 text-gray-600 text-left text-sm">
+                    <tr class="bg-blueRevamp text-white text-left text-sm">
                         <th class="py-2 px-4">Product Image</th>
                         <th class="py-2 px-4">Product Name</th>
                         <th class="py-2 px-4">Base Price</th>

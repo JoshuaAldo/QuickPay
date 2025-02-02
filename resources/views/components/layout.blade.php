@@ -19,7 +19,7 @@
         rel="stylesheet">
 </head>
 
-<body class="flex h-screen bg-PinkMuda overflow-hidden font-zenMaruGothic">
+<body class="flex h-screen overflow-hidden font-zenMaruGothic">
     <x-sidebar></x-sidebar>
     <div class="flex-grow flex flex-col">
         <!-- Header -->
