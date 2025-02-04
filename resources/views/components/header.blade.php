@@ -1,14 +1,12 @@
 <div class="flex justify-between items-center pl-4 pr-4 pt-4 space-x-3">
     <div class="flex-grow">
         <div class="relative">
-            {{-- <input type="text" id="search" placeholder="Search"
-                class="w-full h-11 pr-12 pl-10 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-PinkTua opacity-60" /> --}}
             @if ($redirect == 'order' || $redirect == 'draftOrder')
             @else
                 <form action="{{ route('search') }}" method="GET">
                     <input type="hidden" name="redirect" value="{{ $redirect }}">
                     <input type="text" name="query" placeholder="Search"
-                        class="w-full h-11 pr-12 pl-10 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-PinkTua opacity-60">
+                        class="w-full h-11 pr-12 pl-10 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-blueRevamp opacity-60">
                 </form>
                 <div class="absolute left-3 top-3">
                     <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
@@ -50,11 +48,11 @@
                                 x-transition:leave="transition ease-in duration-75"
                                 x-transition:leave-start="transform opacity-100 scale-100"
                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute w-52 px-5 py-3 rounded-lg shadow border mt-5 bg-pink-100">
+                                class="absolute w-52 px-5 py-3 rounded-lg shadow border mt-5 bg-white hover:bg-blueRevamp hover:text-white">
                                 <ul class="space-y-3">
                                     <li class="font-medium">
                                         <button
-                                            class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:bg-PinkSelect hover:text-pink-100 rounded-md">
+                                            class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent  rounded-md">
                                             <div class="mr-3 text-red-600">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

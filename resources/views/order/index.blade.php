@@ -2,20 +2,6 @@
     <x-slot name="redirect">{{ $redirect }}</x-slot>
     <div class="container mx-auto mt-6 font-zenMaruGothic">
         <h1 class="text-2xl font-bold mb-4">Order Products</h1>
-        {{-- <div class="filter-buttons">
-            <!-- Tombol untuk menampilkan semua produk -->
-            <button onclick="window.location='{{ route('order.index') }}'"
-                class=" bg-PinkTua w-24 text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 {{ is_null($selectedCategory) ? 'bg-pink-900 text-white' : 'bg-PinkTua' }}">
-                All Items
-            </button>
-            <!-- Tombol untuk setiap kategori -->
-            @foreach ($categories as $category)
-                <button onclick="window.location='{{ route('order.index', ['category' => $category->id]) }}'"
-                    class="bg-PinkTua w-auto text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 {{ $selectedCategory == $category->id ? 'bg-pink-900 text-white' : 'bg-PinkTua' }}">
-                    {{ $category->category_name }}
-                </button>
-            @endforeach
-        </div> --}}
         @if (session('success'))
             <!-- Modal untuk menampilkan status transaksi -->
             <div id="paymentStatusModal"
@@ -48,7 +34,7 @@
                         </div>
 
                         <!-- Info section for change -->
-                        <div class="flex justify-between items-center bg-pink-200 p-2 rounded-md mb-10">
+                        <div class="flex justify-between items-center bg-blueRevamp2 p-2 rounded-md mb-10">
                             <span class="text-gray-700 font-medium">Change:</span>
                             <span class="text-gray-700 font-semibold">Rp{{ session('change') }}</span>
                         </div>
@@ -58,7 +44,7 @@
                             <input type="hidden" name="order_id" value="{{ session('orderId') }}">
                             <input type="hidden" name="hiddenDiskon" id="hiddenDiskon" value="{{ $discount }}">
                             <button type="submit"
-                                class="w-full bg-PinkTua text-white py-2 rounded-md mb-2 font-semibold hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">
+                                class="w-full bg-blueRevamp text-white py-2 rounded-md mb-2 font-semibold hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">
                                 Print Receipt
                             </button>
                         </form>
@@ -66,7 +52,7 @@
                         <!-- Tombol untuk melihat preview struk -->
                         <button type="button" id="seeReceiptBtn"
                             onclick="openReceiptPreview('{{ session('orderId') }}', '{{ $discount }}')"
-                            class="w-full bg-gray-500 text-white py-2 rounded-md mb-2 font-semibold hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">See
+                            class="w-full bg-gray-500 text-white py-2 rounded-md mb-2 font-semibold hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">See
                             Receipt</button>
 
                         <!-- Modal -->
@@ -83,7 +69,7 @@
         @endif
         <div class="flex justify-end mb-4">
             <button type="button"
-                class="bg-PinkTua w-36 text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95"
+                class="bg-blueRevamp w-36 text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
                 onclick="openCartModal()">
                 Cart
             </button>
@@ -109,7 +95,7 @@
                     <!-- Memindahkan input dan tombol ke bawah -->
                     <div class="mt-4 flex items-center justify-end">
                         <button
-                            class="bg-white border dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 text-gray-700 rounded-l-md px-2 hover:bg-PinkSelect transition duration-200"
+                            class="bg-white border dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 text-gray-700 rounded-l-md px-2 hover:bg-blueRevamp2 transition duration-200"
                             onclick="decrementQuantity({{ $product->id }})">-</button>
 
                         <!-- Mengecek apakah ada quantity dari draftOrder untuk produk ini -->
@@ -123,7 +109,7 @@
                             data-product-description="{{ isset($productDescription[$product->product_name]) ? $productDescription[$product->product_name] : '' }}">
 
                         <button
-                            class="bg-white border dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 text-gray-700 rounded-r-md hover:bg-PinkSelect transition duration-200"
+                            class="bg-white border dekstopScreen:text-lg ipad-pro-11:text-ipad-font-input dekstopScreen:w-8 dekstopScreen:h-8 ipad-pro-11:w-4 ipad-pro-11:h-4 text-gray-700 rounded-r-md hover:bg-blueRevamp2 transition duration-200"
                             onclick="incrementQuantity({{ $product->id }})">+</button>
                     </div>
                 </div>
@@ -171,7 +157,7 @@
                                 class="bg-orange-500 text-white hover:bg-orange-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
                                 onclick="saveToDraft()">Save to Draft</button>
                             <button
-                                class="bg-PinkTua text-white hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
+                                class="bg-blueRevamp text-white hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95 rounded-lg px-4 py-2"
                                 onclick="showPaymentModal()">Pay</button>
                         </div>
                     </div>
@@ -305,7 +291,8 @@
                                         class="bg-gray-100 p-2">8</button>
                                     <button type="button" onclick="appendAmount('9')"
                                         class="bg-gray-100 p-2">9</button>
-                                    <button type="button" onclick="clearAmount()" class="bg-red-200 p-2">C</button>
+                                    <button type="button" onclick="clearAmount()"
+                                        class="bg-blueRevamp2 p-2">C</button>
                                     <button type="button" onclick="appendAmount('0')"
                                         class="bg-gray-100 p-2">0</button>
                                     <!-- Backspace Button -->
@@ -315,7 +302,7 @@
                                 </div>
                                 <input type="hidden" name="draftId" value="{{ $draftId }}">
                                 <button type="submit"
-                                    class="bg-PinkTua text-white rounded-lg p-2 col-span-3 mt-4 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 w-full">Confirm
+                                    class="bg-blueRevamp text-white rounded-lg p-2 col-span-3 mt-4 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95 w-full">Confirm
                                     Order</button>
                 </form>
             </div>

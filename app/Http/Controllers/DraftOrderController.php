@@ -76,4 +76,16 @@ class DraftOrderController extends Controller
 
         return response()->json($order);
     }
+
+    public function destroy($id)
+    {
+        $draftOrder = DraftOrder::find($id);
+
+        if ($draftOrder) {
+            $draftOrder->delete();
+            return redirect()->route('draftOrder.index')->with('success', 'Draft Order deleted successfully');
+        }
+
+        return redirect()->route('draftOrder.index')->with('error', 'Draft Order not found');
+    }
 }

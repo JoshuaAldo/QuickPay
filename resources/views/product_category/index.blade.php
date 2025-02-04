@@ -16,10 +16,10 @@
         <!-- Button to Open the Modal -->
         <div class="flex justify-end mb-4">
             <a href="{{ route('export.productsCategory') }}"
-                class="bg-PinkTua text-white rounded-2xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Export
+                class="bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Export
                 to Excel</a>
             <button type="button"
-                class="bg-PinkTua text-white px-4 py-2 rounded-2xl hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95"
+                class="bg-blueRevamp text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
                 onclick="toggleModal('addCategoryModal')">
                 Add Category
             </button>
@@ -29,7 +29,7 @@
         <div class="flex flex-col h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
-                    <tr class="bg-PinkMuda2 text-gray-600 text-left text-sm">
+                    <tr class="bg-blueRevamp text-white text-left text-sm">
                         <th class="py-3 px-6">Category Name</th>
                         <th class="py-3 px-6">Capital</th>
                         <th class="py-3 px-6 text-center">Total Stock</th>
@@ -46,12 +46,49 @@
 
                                 @if ($category->products_count > 0)
                                     <button
-                                        class="bg-red-600 opacity-50 cursor-not-allowed rounded-3xl text-white px-4 py-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95"
-                                        onclick="openDeleteCategoryModal({{ $category->id }})" disabled>Delete</button>
+                                        class="bg-red-600 rounded-3xl px-4 py-2 opacity-50 focus:outline-none transition duration-200 cursor-not-allowed"
+                                        onclick="openDeleteCategoryModal({{ $category->id }})" disabled><svg
+                                            fill="#F5F5F5" version="1.1" id="Capa_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px"
+                                            viewBox="0 0 408.483 408.483" xml:space="preserve">
+                                            <g>
+                                                <g>
+                                                    <path
+                                                        d="M87.748,388.784c0.461,11.01,9.521,19.699,20.539,19.699h191.911c11.018,0,20.078-8.689,20.539-19.699l13.705-289.316
+                                                    H74.043L87.748,388.784z M247.655,171.329c0-4.61,3.738-8.349,8.35-8.349h13.355c4.609,0,8.35,3.738,8.35,8.349v165.293
+                                                    c0,4.611-3.738,8.349-8.35,8.349h-13.355c-4.61,0-8.35-3.736-8.35-8.349V171.329z M189.216,171.329
+                                                    c0-4.61,3.738-8.349,8.349-8.349h13.355c4.609,0,8.349,3.738,8.349,8.349v165.293c0,4.611-3.737,8.349-8.349,8.349h-13.355
+                                                    c-4.61,0-8.349-3.736-8.349-8.349V171.329L189.216,171.329z M130.775,171.329c0-4.61,3.738-8.349,8.349-8.349h13.356
+                                                    c4.61,0,8.349,3.738,8.349,8.349v165.293c0,4.611-3.738,8.349-8.349,8.349h-13.356c-4.61,0-8.349-3.736-8.349-8.349V171.329z" />
+                                                    <path
+                                                        d="M343.567,21.043h-88.535V4.305c0-2.377-1.927-4.305-4.305-4.305h-92.971c-2.377,0-4.304,1.928-4.304,4.305v16.737H64.916
+                                                    c-7.125,0-12.9,5.776-12.9,12.901V74.47h304.451V33.944C356.467,26.819,350.692,21.043,343.567,21.043z" />
+                                                </g>
+                                            </g>
+                                        </svg></button>
                                 @else
                                     <button
                                         class="bg-red-600 rounded-3xl text-white px-4 py-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95"
-                                        onclick="openDeleteCategoryModal({{ $category->id }})">Delete</button>
+                                        onclick="openDeleteCategoryModal({{ $category->id }})"><svg fill="#F5F5F5"
+                                            version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px"
+                                            viewBox="0 0 408.483 408.483" xml:space="preserve">
+                                            <g>
+                                                <g>
+                                                    <path
+                                                        d="M87.748,388.784c0.461,11.01,9.521,19.699,20.539,19.699h191.911c11.018,0,20.078-8.689,20.539-19.699l13.705-289.316
+                                                    H74.043L87.748,388.784z M247.655,171.329c0-4.61,3.738-8.349,8.35-8.349h13.355c4.609,0,8.35,3.738,8.35,8.349v165.293
+                                                    c0,4.611-3.738,8.349-8.35,8.349h-13.355c-4.61,0-8.35-3.736-8.35-8.349V171.329z M189.216,171.329
+                                                    c0-4.61,3.738-8.349,8.349-8.349h13.355c4.609,0,8.349,3.738,8.349,8.349v165.293c0,4.611-3.737,8.349-8.349,8.349h-13.355
+                                                    c-4.61,0-8.349-3.736-8.349-8.349V171.329L189.216,171.329z M130.775,171.329c0-4.61,3.738-8.349,8.349-8.349h13.356
+                                                    c4.61,0,8.349,3.738,8.349,8.349v165.293c0,4.611-3.738,8.349-8.349,8.349h-13.356c-4.61,0-8.349-3.736-8.349-8.349V171.329z" />
+                                                    <path
+                                                        d="M343.567,21.043h-88.535V4.305c0-2.377-1.927-4.305-4.305-4.305h-92.971c-2.377,0-4.304,1.928-4.304,4.305v16.737H64.916
+                                                    c-7.125,0-12.9,5.776-12.9,12.901V74.47h304.451V33.944C356.467,26.819,350.692,21.043,343.567,21.043z" />
+                                                </g>
+                                            </g>
+                                        </svg></button>
                                 @endif
                             </td>
                         </tr>
@@ -76,12 +113,12 @@
                         <label for="category_name" class="block text-sm font-medium text-gray-700 pb-1">Category
                             Name</label>
                         <input type="text"
-                            class="w-full h-8 border-gray-300 rounded-md shadow-sm focus:outline-none  p-2"
+                            class="w-full h-8 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blueRevamp2  p-2"
                             id="category_name" name="category_name" required>
                     </div>
                     <div class="flex justify-end">
                         <button type="submit"
-                            class="bg-PinkTua rounded-3xl w-full text-white px-4 py-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Save</button>
+                            class="bg-blueRevamp rounded-3xl w-full text-white px-4 py-2 hover:bg-blueRevamp3focus:outline-none transition duration-200 transform hover:scale-95">Save</button>
                     </div>
                 </form>
             </div>
@@ -102,9 +139,9 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="bg-red-600 rounded-xl text-white px-4 py-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Delete</button>
+                                class="bg-red-600 rounded-xl text-white px-4 py-2 hover:bg-blueRevamp focus:outline-none transition duration-200 transform hover:scale-95">Delete</button>
                             <button type="button"
-                                class="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-xl hover:bg-pink-900 hover:text-white focus:outline-none transition duration-200 transform hover:scale-95"
+                                class="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-xl hover:bg-blueRevamp hover:text-white focus:outline-none transition duration-200 transform hover:scale-95"
                                 onclick="closeDeleteCategoryModal()">Cancel</button>
                         </form>
                     </div>

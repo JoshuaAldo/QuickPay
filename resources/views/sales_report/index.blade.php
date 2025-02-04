@@ -21,18 +21,18 @@
                 <!-- Filter Button -->
                 <div class="flex justify-end mb-4 h-10 m-7">
                     <button type="submit"
-                        class="w-20 bg-PinkTua text-white rounded-2xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Filter</button>
+                        class="w-20 bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Filter</button>
                     <!-- Reset Button -->
                     <a href="{{ route('sales-report.index') }}">
                         <button type="button"
-                            class="w-20 bg-PinkTua text-white rounded-2xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Reset</button>
+                            class="w-20 bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Reset</button>
                     </a>
                 </div>
             </div>
         </form>
         <div class="flex justify-end mb-4 h-10 m-7">
             <a href="{{ route('export.orders') }}"
-                class="bg-PinkTua text-white rounded-2xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95">Export
+                class="bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp focus:outline-none transition duration-200 transform hover:scale-95">Export
                 to Excel</a>
         </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="flex flex-col h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto font-zenMaruGothic">
         <table class="min-w-full max-w-full bg-white border-gray-200">
             <thead class="rounded-lg">
-                <tr class="bg-PinkMuda2 text-gray-600 text-left text-sm">
+                <tr class="bg-blueRevamp text-white text-left text-sm">
                     <th class="py-2 px-4">Transaction ID</th>
                     <th class="py-2 px-4">Customer Name</th>
                     <th class="py-2 px-4">Transaction Date</th>
@@ -58,12 +58,12 @@
                         <td class="py-2 px-4">{{ \Carbon\Carbon::parse($order->order_date)->format('Y-m-d') }}
                         </td>
                         <td class="py-2 px-4">{{ $order->payment_method }}</td>
-                        <td class="py-2 px-4">{{ $order->total_item_value }}</td>
+                        <td class="py-2 px-4">Rp{{ number_format($order->total_item_value, 0, ',', '.') }}</td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex justify-center items-center space-x-2">
                                 <button type="button" id="seeReceiptBtn"
                                     onclick="openReceiptPreview('{{ $order->id }}', '{{ $order->discount }}')"
-                                    class="bg-PinkTua text-white rounded-3xl p-2 mr-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 w-40">See
+                                    class="bg-blueRevamp text-white rounded-3xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95 w-40">See
                                     Receipt
                                 </button>
                             </div>

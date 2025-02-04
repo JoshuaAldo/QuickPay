@@ -364,9 +364,9 @@ function populateHiddenInputs() {
     document.querySelectorAll('#transactionDetails .transaction-item').forEach(item => {
         const productName = item.querySelector('.product-name').innerText;
         const quantity = parseInt(item.querySelector('.quantity').innerText.replace('x ', ''));
-        const itemTotal = item.querySelector('.item-total').innerText.replace('Rp', '').replace(',', '');
+        const itemTotal = item.querySelector('.item-total').innerText.replace('Rp', '').replace(/\,/g, '');
         const description = item.querySelector('.description').innerText;
-        
+        console.log(itemTotal);
         // Push item transaksi sebagai objek JSON
         transactionDetails.push({
             productName,

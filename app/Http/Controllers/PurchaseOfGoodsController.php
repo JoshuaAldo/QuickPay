@@ -38,7 +38,7 @@ class PurchaseOfGoodsController extends Controller
     {
         // Validasi data input
         $request->validate([
-            'item_name' => 'required|string|max:255|unique:products,product_name',
+            'item_name' => 'required|string|max:255|unique:purchases,item_name',
             'quantity' => 'required|numeric',
             'transaction_date' => now(),
             'payment_method' => 'required|string',
@@ -63,5 +63,17 @@ class PurchaseOfGoodsController extends Controller
         $purchases = Auth::user()->purchases;
         $redirect = "purchase-of-goods";
         return redirect()->route('purchase-of-goods.index')->with('success', 'Purchases added successfully.')->with('redirect', $redirect)->with('purchases', $purchases);
+    }
+
+    public function destroy($id)
+    {
+        $purchase = Purchase::find($id);
+
+        if ($purchase) {
+            $purchase->delete();
+            return redirect()->route('purchase-of-goods.index')->with('success', 'Purchase of Goods deleted successfully');
+        }
+
+        return redirect()->route('purchase-of-goods.index')->with('error', 'Purchase of Goods not found');
     }
 }

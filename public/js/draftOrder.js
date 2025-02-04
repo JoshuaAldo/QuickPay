@@ -18,6 +18,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
 });
 
+function openDeleteDraftOrderModal(draftOrderId) {
+    // Atur action form delete dengan URL yang sesuai
+    document.getElementById('deleteDraftOrderForm').action = `/draftOrder/${draftOrderId}`;
+    // Tampilkan modal
+    document.getElementById('deleteDraftOrderModal').classList.remove('hidden');
+}
+
+function closeDeleteDraftOrderModal() {
+    document.getElementById('deleteDraftOrderModal').classList.add('hidden');
+}
+
 let productDescriptions = {}; 
 
 function closeCartModal() {
