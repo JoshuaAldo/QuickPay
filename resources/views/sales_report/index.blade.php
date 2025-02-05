@@ -1,9 +1,9 @@
 <x-layout>
     <x-slot name="redirect">{{ $redirect }}</x-slot>
     <h1 class="text-2xl font-bold font-zenMaruGothic">Sales Report</h1>
-    <div class="flex justify-end mb-4 font-zenMaruGothic">
+    <div class="flex-wrap lg:flex justify-end mb-4 font-zenMaruGothic w-screen lg:w-full overflow-x-auto">
         <form method="GET" action="{{ url('sales-report') }}">
-            <div class="flex justify-end mb-4 space-x-4">
+            <div class="flex justify-end space-x-4 ">
                 <!-- Start Date -->
                 <div class="flex flex-col">
                     <label for="start_date" class="mb-1">Start Date</label>
@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- Filter Button -->
-                <div class="flex justify-end mb-4 h-10 m-7">
+                <div class="flex justify-end h-10 m-7">
                     <button type="submit"
                         class="w-20 bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Filter</button>
                     <!-- Reset Button -->
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </form>
-        <div class="flex justify-end mb-4 h-10 m-7">
+        <div class="flex justify-end h-10 lg:m-7">
             <a href="{{ route('export.orders') }}"
                 class="bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp focus:outline-none transition duration-200 transform hover:scale-95">Export
                 to Excel</a>
@@ -38,7 +38,8 @@
     </div>
 
     <!-- Products Table -->
-    <div class="flex flex-col h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto font-zenMaruGothic">
+    <div
+        class="flex flex-col w-screen lg:w-full h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto font-zenMaruGothic">
         <table class="min-w-full max-w-full bg-white border-gray-200">
             <thead class="rounded-lg">
                 <tr class="bg-blueRevamp text-white text-left text-sm">

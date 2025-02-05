@@ -16,9 +16,9 @@
             </ul>
         </div>
     @endif
-    <div class="flex justify-end mb-4">
+    <div class="flex-wrap lg:flex justify-end mb-4 font-zenMaruGothic w-screen lg:w-full overflow-x-auto">
         <form method="GET" action="{{ url('purchase-of-goods') }}">
-            <div class="flex justify-end mb-4 space-x-4">
+            <div class="flex justify-end mb-2 space-x-4">
                 <!-- Start Date -->
                 <div class="flex flex-col">
                     <label for="start_date" class="mb-1">Start Date</label>
@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- Filter Button -->
-                <div class="flex justify-end mb-4 h-10 m-7">
+                <div class="flex justify-end h-10 mt-7 mb-2">
                     <button type="submit"
                         class="w-20 bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Filter</button>
                     <!-- Reset Button -->
@@ -45,20 +45,23 @@
                 </div>
             </div>
         </form>
-        <div class="flex justify-end mb-4 h-10 m-7">
-            <a href="{{ route('export.purchase') }}"
-                class="bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Export
-                to Excel</a>
-            <button type="button"
-                class="bg-blueRevamp text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
-                onclick="openModal()">
-                Add Product
-            </button>
+        <div class="flex justify-end mt-7 mb-4 font-zenMaruGothic">
+            <div class="flex justify-end mb-4">
+                <a href="{{ route('export.products') }}"
+                    class="bg-blueRevamp w-24 lg:w-auto text-white text-center rounded-2xl px-4 py-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Export
+                    to Excel</a>
+                <button type="button"
+                    class="bg-blueRevamp w-24 lg:w-auto text-white text-center px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
+                    onclick="openModal()">
+                    Add Product
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Products Table -->
-    <div class="flex flex-col h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto">
+    <div
+        class="flex flex-col w-screen lg:w-full h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto font-zenMaruGothic">
         <table class="min-w-full max-w-full bg-white border-gray-200">
             <thead class="rounded-lg">
                 <tr class="bg-blueRevamp text-white text-left text-sm">
@@ -81,7 +84,7 @@
                         <td class="py-2 px-4">{{ $purchase->payment_method }}</td>
                         <td class="py-2 px-4">{{ $purchase->item_category }}</td>
                         <td class="py-2 px-4">{{ $purchase->price }}</td>
-                        <td class="py-2 px-4">{{ $purchase->total_price }}</td>
+                        <td class="py-2 px-4">Rp{{ number_format($purchase->total_price, 0, ',', '.') }}</td>
                         <td class="py-2 px-4"><button
                                 class="bg-red-600 rounded-lg text-white px-4 py-2 hover:bg-pink-900 focus:outline-none transition duration-200 transform hover:scale-95 mr-4"
                                 onclick="openDeletePurchaseModal({{ $purchase->id }})"><svg fill="#F5F5F5"

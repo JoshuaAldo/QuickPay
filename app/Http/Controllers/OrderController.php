@@ -100,16 +100,29 @@ class OrderController extends Controller
         // Decode transaction details JSON
         $transactionDetails = json_decode($validatedData['transaction_details'], true);
         // $orderDate = Carbon::createFromFormat('m/d/Y, h:i:s A', $validatedData['order_date'])->format('Y-m-d H:i:s');
-        try {
-            $orderDate = Carbon::createFromFormat('m/d/Y, h:i:s A', $validatedData['order_date'])->format('Y-m-d H:i:s');
-        } catch (\Exception $e) {
-            // Jika format 12 jam gagal, coba format 24 jam sebagai alternatif
+        if (!empty($validatedData['order_date'])) {
             try {
-                $orderDate = Carbon::createFromFormat('m/d/Y, H:i:s', $validatedData['order_date'])->format('Y-m-d H:i:s');
+                // Normalisasi format AM/PM (ubah am/pm ke AM/PM)
+                $normalizedDate = preg_replace_callback('/\b(am|pm)\b/', function ($matches) {
+                    return strtoupper($matches[0]);
+                }, $validatedData['order_date']);
+
+                // Coba format 12 jam dengan AM/PM dalam huruf besar
+                $orderDate = Carbon::createFromFormat('m/d/Y, h:i:s A', $normalizedDate)->format('Y-m-d H:i:s');
             } catch (\Exception $e) {
-                // Handle the error, log, or return a default/fallback value
-                $orderDate = null; // atau berikan pesan error sesuai kebutuhan
+                // Jika format 12 jam gagal, coba format 24 jam sebagai alternatif
+                try {
+                    $orderDate = Carbon::createFromFormat('m/d/Y, H:i:s', $validatedData['order_date'])->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                    // Log atau tangani error, atau set default value
+                    \Log::error('Invalid date format for order_date: ' . $validatedData['order_date']);
+                    $orderDate = Carbon::now()->format('Y-m-d H:i:s'); // atau set default date jika perlu
+                }
             }
+        } else {
+            // Tangani kasus jika order_date kosong
+            \Log::error('Order date is empty');
+            $orderDate = null; // atau nilai default
         }
         // Hitung total item dari transaksi
         $totalItem = array_reduce($transactionDetails, function ($sum, $item) {

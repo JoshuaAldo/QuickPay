@@ -69,7 +69,7 @@
         @endif
         <div class="flex justify-end mb-4">
             <button type="button"
-                class="bg-blueRevamp w-36 text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
+                class="bg-blueRevamp w-24 text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
                 onclick="openCartModal()">
                 Cart
             </button>
@@ -81,7 +81,7 @@
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col dekstopScreen:h-52 ipad-pro-11:h-32">
                     <div class="flex">
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}"
-                            class="dekstopScreen:w-32 dekstopScreen:h-32 object-cover rounded-md ipad-pro-11:w-20 ipad-pro-11:h-16">
+                            class="w-20 h-20 dekstopScreen:w-32 dekstopScreen:h-32 object-cover rounded-md ipad-pro-11:w-20 ipad-pro-11:h-16">
                         <div class="ml-4 flex-grow">
                             <h2 class="dekstopScreen:text-xl font-semibold mt-2 ipad-pro-11:text-sm">
                                 {{ $product->product_name }}</h2>

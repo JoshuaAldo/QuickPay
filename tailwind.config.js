@@ -24,7 +24,7 @@ module.exports = {
         height: {
           'dekstop': '45rem', 
           'ipad' : '38rem',
-          'dekstopOrder': '42rem', 
+          'dekstopOrder': '40rem', 
           'ipadOrder' : '36rem',
         },
         fontSize: {

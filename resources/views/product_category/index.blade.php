@@ -8,25 +8,29 @@
                 {{ session('success') }}
             </div>
         @endif
-        @if (session('error'))
-            <div class="bg-red-500 text-white p-3">
-                {{ session('error') }}
+        @if ($errors->any())
+            <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
         <!-- Button to Open the Modal -->
         <div class="flex justify-end mb-4">
             <a href="{{ route('export.productsCategory') }}"
-                class="bg-blueRevamp text-white rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Export
+                class="bg-blueRevamp w-24 lg:w-auto text-white text-center rounded-2xl p-2 mr-2 hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95">Export
                 to Excel</a>
             <button type="button"
-                class="bg-blueRevamp text-white px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
+                class="bg-blueRevamp w-24 lg:w-auto text-white text-center px-4 py-2 rounded-2xl hover:bg-blueRevamp3 focus:outline-none transition duration-200 transform hover:scale-95"
                 onclick="toggleModal('addCategoryModal')">
                 Add Category
             </button>
         </div>
 
         <!-- Category Table -->
-        <div class="flex flex-col h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto">
+        <div class="flex flex-col w-screen lg:w-full h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr class="bg-blueRevamp text-white text-left text-sm">
