@@ -31,7 +31,8 @@
 
     <!-- Products Table -->
     <div class="flex flex-col w-screen lg:w-full h-dekstop overflow-y-auto overflow-x-auto">
-        <table class="min-w-full max-w-full bg-white border-gray-200">
+        <table
+            class="min-w-full max-w-full w-screen lg:w-full bg-white border-gray-200 overflow-y-auto overflow-x-auto">
             <thead class="rounded-lg">
                 <tr class="bg-blueRevamp text-white text-left text-sm">
                     <th class="py-2 px-4">Product Image</th>

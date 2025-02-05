@@ -18,9 +18,10 @@
         href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
 </head>
 
-<body class="flex h-screen overflow-auto font-zenMaruGothic">
+<body class="flex h-screen overflow-auto font-zenMaruGothic w-screen lg:w-full">
     <x-sidebar></x-sidebar>
     <div class="flex-grow flex flex-col">
         <!-- Header -->
@@ -29,7 +30,7 @@
         </x-header>
 
         <!-- Main Content -->
-        <div class="flex-grow p-4">
+        <div class="flex-grow p-4 w-screen lg:w-full">
             {{ $slot }}
         </div>
     </div>
