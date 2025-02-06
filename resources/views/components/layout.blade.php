@@ -21,7 +21,7 @@
 
 </head>
 
-<body class="flex h-screen overflow-auto font-zenMaruGothic w-screen lg:w-full">
+<body class="flex h-full overflow-auto font-zenMaruGothic w-screen lg:w-full">
     <x-sidebar></x-sidebar>
     <div class="flex-grow flex flex-col">
         <!-- Header -->

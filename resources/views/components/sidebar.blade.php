@@ -1,7 +1,7 @@
 <div x-data="{ open: false }" class="relative">
     <!-- Tombol Hamburger (Muncul di Mobile) -->
     <button @click="open = !open"
-        class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-blueRevamp rounded-md text-white focus:outline-none">
+        class="lg:hidden fixed top-3 left-3 z-50 p-2 bg-blueRevamp rounded-md text-white focus:outline-none">
         <!-- Ikon Hamburger -->
         <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
             stroke="currentColor" class="w-6 h-6">
@@ -17,7 +17,7 @@
 
     <aside
         class="inset-y-0 left-0 w-52 lg:w-64 h-full px-5 py-8 bg-blueRevamp border-r rounded-tr-lg rounded-br-lg shadow-2xl transition-transform transform flex-col
-        lg:flex lg:relative fixed -translate-x-full lg:translate-x-0 z-40"
+        lg:flex lg:relative fixed -translate-x-full lg:translate-x-0 z-40 overflow-y-auto"
         x-bind:class="{ '-translate-x-full': !open, 'translate-x-0': open }">
         <p class="font-zenOldMincho text-white text-2xl text-center m-auto p-2">QuickPay</p>
 

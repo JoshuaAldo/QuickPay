@@ -70,8 +70,4 @@ Route::middleware('auth')->group(function () {
     Route::get('export-purchase', function () {
         return Excel::download(new PurchaseExport, 'Purchase-of-Goods-Reports.xlsx');
     })->name('export.purchase');
-
-    // Route::get('/order', function () {
-    //     return view('order');
-    // });
 });
