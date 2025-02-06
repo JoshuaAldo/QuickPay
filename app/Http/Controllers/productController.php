@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -49,7 +50,12 @@ class ProductController extends Controller
     {
         // Validasi data input
         $request->validate([
-            'product_name' => 'required|string|max:255|unique:products,product_name',
+            'product_name' => 'required',
+            'string',
+            'max:255',
+            Rule::unique('products', 'product_name')->where(function ($query) {
+                return $query->where('user_id', Auth::id());
+            }),
             'base_price' => 'required|numeric|min:0',
             'sell_price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -64,8 +70,9 @@ class ProductController extends Controller
             'sell_price' => $request->sell_price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
+            'user_id' => Auth::id(), // Tambahkan user_id manual
         ];
-
+        // Simpan data produk
         // Jika ada gambar, simpan dan tambahkan ke data produk
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images/products', 'public');
@@ -73,8 +80,8 @@ class ProductController extends Controller
         }
 
         // Tambahkan produk baru untuk user yang sedang login
-        Auth::user()->products()->create($productData);
-
+        $productData['user_id'] = Auth::id();
+        Product::create($productData);
         return redirect()->route('product.index')->with('success', 'Product added successfully.');
     }
 

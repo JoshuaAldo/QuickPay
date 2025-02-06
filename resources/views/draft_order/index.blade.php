@@ -9,7 +9,7 @@
             </div>
         @endif
         <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 dekstopScreen:h-dekstopOrder ipad-pro-11:h-ipadOrder overflow-y-auto overflow-x-auto">
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 h-dekstop w-screen lg:w-full overflow-y-auto overflow-x-auto">
             @foreach ($draftOrders as $order)
                 <div class="bg-white shadow-md rounded-lg p-6 overflow-y-auto">
                     <h2 class="text-lg font-semibold text-gray-800">Customer Name: {{ $order->customer_name }}</h2>

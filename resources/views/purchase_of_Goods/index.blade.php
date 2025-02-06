@@ -60,8 +60,7 @@
     </div>
 
     <!-- Products Table -->
-    <div
-        class="flex flex-col w-screen lg:w-full h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto font-zenMaruGothic">
+    <div class="flex flex-col w-screen lg:w-full h-dekstop overflow-y-auto overflow-x-auto font-zenMaruGothic">
         <table class="min-w-full max-w-full bg-white border-gray-200">
             <thead class="rounded-lg">
                 <tr class="bg-blueRevamp text-white text-left text-sm">

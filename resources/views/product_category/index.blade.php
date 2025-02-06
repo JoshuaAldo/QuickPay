@@ -30,7 +30,7 @@
         </div>
 
         <!-- Category Table -->
-        <div class="flex flex-col w-screen lg:w-full h-dekstop ipad-pro-11:h-ipad overflow-y-auto overflow-x-auto">
+        <div class="flex flex-col w-screen lg:w-full h-dekstop overflow-y-auto overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr class="bg-blueRevamp text-white text-left text-sm">

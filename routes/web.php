@@ -18,12 +18,12 @@ use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\EnsureEmailIsNotVerified;
 
 // Route::get('/email/verify', function () {
 //     return view('auth.verify');
 // })->middleware('auth')->name('verification.notice');
 
-use App\Http\Middleware\EnsureEmailIsNotVerified;
 
 Route::get('/email/verify', function () {
     return view('auth.verify');

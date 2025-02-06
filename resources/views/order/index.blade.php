@@ -75,8 +75,7 @@
             </button>
         </div>
 
-        <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 dekstopScreen:h-dekstopOrder ipad-pro-11:h-ipadOrder overflow-y-auto overflow-x-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 h-dekstop overflow-y-auto overflow-x-auto">
             @foreach ($products as $product)
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col dekstopScreen:h-52 ipad-pro-11:h-32">
                     <div class="flex">

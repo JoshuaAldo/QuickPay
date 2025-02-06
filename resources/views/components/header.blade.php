@@ -40,7 +40,7 @@
                                     x-transition:leave="transition ease-in duration-75"
                                     x-transition:leave-start="transform opacity-100 scale-100"
                                     x-transition:leave-end="transform opacity-0 scale-95"
-                                    class="relative lg:absolute z-50 w-52 px-5 py-2 rounded-lg shadow border mt-2 right-0 bg-white hover:bg-blueRevamp hover:text-white">
+                                    class="relative lg:absolute z-50 w-fit px-5 py-2 rounded-lg shadow border mt-2 right-0 bg-white hover:bg-blueRevamp hover:text-white">
                                     <ul class="space-y-2" style="position: relative;">
                                         <li class="font-medium">
                                             <button

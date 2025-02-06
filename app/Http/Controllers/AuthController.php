@@ -58,9 +58,15 @@ class AuthController extends Controller
         }
     }
 
-    function logout()
+
+    public function logout(Request $request)
     {
-        FacadesAuth::logout();
-        return redirect()->route('login');
+        FacadesAuth::logout();  // Logout user
+
+        // Invalidate session dan regenerate token CSRF
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');  // Redirect ke halaman login
     }
 }
