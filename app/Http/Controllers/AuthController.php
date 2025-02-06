@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Auth\Events\Registered;
+
 
 class AuthController extends Controller
 {
@@ -16,15 +18,27 @@ class AuthController extends Controller
 
     function submitRegistration(Request $request)
     {
-        $successRegist = $request->validate([
+        // Validasi input
+        $validatedData = $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email:dns|unique:users',
             'password' => 'required|min:8|max:30'
         ]);
-        $successRegist['password'] = bcrypt($successRegist['password']);
-        User::create($successRegist);
 
-        return redirect()->route('login');
+        // Hash password
+        $validatedData['password'] = bcrypt($validatedData['password']);
+
+        // Buat pengguna baru
+        $user = User::create($validatedData);
+
+        // Trigger event Registered untuk mengirim email verifikasi
+        event(new Registered($user));
+
+        // Log in pengguna yang baru terdaftar
+        FacadesAuth::login($user);
+
+        // Redirect ke halaman verifikasi email
+        return redirect('/email/verify');
     }
 
     function showLogin()
